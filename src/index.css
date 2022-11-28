@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+ion-icon {
+  @apply pointer-events-none text-2xl;
+}
