@@ -36,28 +36,29 @@
       <nav
         class="js-projects-nav hidden min-h-[200px] bg-gray-300 py-3 text-center md:col-span-3 md:block"
       >
-        <h2 class="text-xl font-bold md:text-2xl">Projects</h2>
-        <ul class="mt-2 space-y-2 px-2 md:px-0">
-          <li
-            class="flex cursor-pointer justify-between bg-gray-50 p-1 pl-4 hover:bg-gray-50"
+        <div class="flex justify-center">
+          <h2 class="text-xl font-bold md:text-2xl">Projects</h2>
+          <button
+            type="button"
+            class="js-new-project-btn ml-1 flex cursor-pointer items-center text-slate-900 hover:text-slate-700 disabled:text-slate-500"
+            title="Create new project"
+            aria-label="Create new project"
           >
-            <span>Default</span>
-            <button
-              type="button"
-              class="flex cursor-pointer items-center hover:text-red-800"
-              title="Delete project"
-              aria-label="Delete projects"
-            >
-              <ion-icon name="close-outline"></ion-icon>
-            </button>
-          </li>
-        </ul>
+            <ion-icon
+              name="add-circle-outline"
+              class="text-3xl md:text-4xl"
+            ></ion-icon>
+          </button>
+        </div>
+        <ul class="js-project-list mt-2 space-y-2 px-2 md:px-0"></ul>
       </nav>
       <main class="bg-gray-50 p-3 md:col-span-9">
         <section>
-          <h3 class="text-center text-lg font-bold md:text-xl">Default</h3>
+          <h3
+            class="js-todos-project text-center text-lg font-bold md:text-xl"
+          ></h3>
           <ul class="mt-2 space-y-2">
-            <li class="bg-orange-200 p-2">
+            <!-- li class="bg-orange-200 p-2">
               <div class="flex items-center">
                 <button
                   type="button"
@@ -86,7 +87,7 @@
                 </button>
               </div>
               <p class="ml-[30px] text-xs">11/30/2022</p>
-            </li>
+            </li> -->
           </ul>
         </section>
         <button

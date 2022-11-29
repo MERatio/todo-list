@@ -5,3 +5,7 @@
 ion-icon {
   @apply pointer-events-none text-2xl;
 }
+
+.active-project {
+  @apply bg-gray-50;
+}
