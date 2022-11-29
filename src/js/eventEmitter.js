@@ -5,6 +5,8 @@ import Dom from './Dom';
 const eventEmitter = new EventEmitter();
 
 eventEmitter.on('project-create', (project) => {
+  Project.projects = [...Project.projects, project];
+  localStorage.setItem('projects', JSON.stringify(Project.projects));
   Project.activeProject = project;
   Dom.addProject(project);
 });

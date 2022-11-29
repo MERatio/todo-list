@@ -1,16 +1,15 @@
 import { nanoid } from 'nanoid';
 import eventEmitter from './eventEmitter';
 
-function Project(title) {
-  const id = nanoid();
-
+function Project(id = nanoid(), title) {
   return { id, title };
 }
 
+Project.projects = [];
 Project.activeProject = null;
 
-Project.create = ({ title }) => {
-  const project = Project(title);
+Project.create = ({ id, title }) => {
+  const project = Project(id, title);
   eventEmitter.emit('project-create', project);
 };
 

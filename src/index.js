@@ -1,6 +1,6 @@
 import './index.css';
-import Project from './js/Project.js';
+import populate from './js/populate';
 import Dom from './js/Dom.js';
 
+populate();
 Dom.attachEvents();
-Project.create({ title: 'Default' });
