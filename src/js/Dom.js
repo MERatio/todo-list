@@ -1,4 +1,6 @@
+import format from 'date-fns/format';
 import Project from './Project';
+import Todo from './Todo';
 import eventEmitter from './eventEmitter';
 
 const Dom = (function () {
@@ -8,6 +10,84 @@ const Dom = (function () {
   const _newProjectBtn = document.querySelector('.js-new-project-btn');
   const _projectList = document.querySelector('.js-project-list');
   const _todosProject = document.querySelector('.js-todos-project');
+  const _todoList = document.querySelector('.js-todo-list');
+
+  function _createTodo(data) {
+    const priorityColors = {
+      1: 'bg-orange-200',
+      2: 'bg-orange-300',
+      3: 'bg-orange-400',
+      4: 'bg-orange-500',
+    };
+
+    const todo = document.createElement('li');
+    todo.classList.add(`${priorityColors[data.priority]}`, 'p-2');
+
+    const topDiv = document.createElement('div');
+    topDiv.classList.add('flex', 'items-center');
+    todo.appendChild(topDiv);
+
+    const completeBtn = document.createElement('button');
+    completeBtn.setAttribute('type', 'button');
+    completeBtn.classList.add(
+      'flex',
+      'cursor-pointer',
+      'items-center',
+      'hover:text-slate-700'
+    );
+    completeBtn.setAttribute('title', 'Mark as complete');
+    completeBtn.setAttribute('aria-label', 'Mark as complete');
+    topDiv.appendChild(completeBtn);
+
+    const completeBtnIcon = document.createElement('ion-icon');
+    completeBtnIcon.setAttribute('name', 'ellipse-outline');
+    completeBtn.appendChild(completeBtnIcon);
+
+    const title = document.createElement('p');
+    title.classList.add('ml-1', 'mr-auto');
+    title.textContent = data.title;
+    topDiv.appendChild(title);
+
+    const editBtn = document.createElement('button');
+    editBtn.setAttribute('type', 'button');
+    editBtn.classList.add(
+      'flex',
+      'cursor-pointer',
+      'items-center',
+      'hover:text-slate-700'
+    );
+    editBtn.setAttribute('title', 'Edit todo');
+    editBtn.setAttribute('aria-label', 'Edit todo');
+    topDiv.appendChild(editBtn);
+
+    const editBtnIcon = document.createElement('ion-icon');
+    editBtnIcon.setAttribute('name', 'create-outline');
+    editBtn.appendChild(editBtnIcon);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.setAttribute('type', 'button');
+    deleteBtn.classList.add(
+      'ml-2',
+      'flex',
+      'cursor-pointer',
+      'items-center',
+      'hover:text-red-800'
+    );
+    deleteBtn.setAttribute('title', 'Delete todo');
+    deleteBtn.setAttribute('aria-label', 'Delete todo');
+    topDiv.appendChild(deleteBtn);
+
+    const deleteBtnIcon = document.createElement('ion-icon');
+    deleteBtnIcon.setAttribute('name', 'trash-outline');
+    deleteBtn.appendChild(deleteBtnIcon);
+
+    const date = document.createElement('p');
+    date.classList.add('ml-[30px]', 'text-xs');
+    date.textContent = format(data.dueDate, 'MM/dd/yyyy');
+    todo.appendChild(date);
+
+    return todo;
+  }
 
   function _handleFinishedProjectCreation(event) {
     event.preventDefault();
@@ -94,7 +174,6 @@ const Dom = (function () {
 
     window.addEventListener('click', _handleFinishedProjectCreation);
   }
-
   function _handleMenuClick() {
     const menuBtnIconName = _projectsNav.classList.contains('hidden')
       ? 'close-outline'
@@ -113,12 +192,19 @@ const Dom = (function () {
   function setNewActiveProject(projectId) {
     const prevActiveProject = document.querySelector('.active-project');
     const activeProject = document.querySelector(`[data-id="${projectId}"]`);
+    const todos = Todo.findByProjectId(projectId);
 
     if (prevActiveProject) {
       prevActiveProject.classList.remove('active-project');
     }
 
     activeProject.classList.add('active-project');
+
+    _todoList.innerHTML = '';
+
+    for (let todo of todos) {
+      addTodo(todo);
+    }
   }
 
   function addProject(data) {
@@ -128,7 +214,12 @@ const Dom = (function () {
     eventEmitter.emit('project-render', project);
   }
 
-  return { attachEvents, setNewActiveProject, addProject };
+  function addTodo(data) {
+    const todo = _createTodo(data);
+    _todoList.appendChild(todo);
+  }
+
+  return { attachEvents, setNewActiveProject, addProject, addTodo };
 })();
 
 export default Dom;
