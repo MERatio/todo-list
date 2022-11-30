@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import Project from './Project';
 import Todo from './Todo';
-import Dom from './Dom';
+import * as Dom from './Dom';
 
 const eventEmitter = new EventEmitter();
 

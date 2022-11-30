@@ -1,6 +1,6 @@
 import './index.css';
 import populate from './js/populate';
-import Dom from './js/Dom.js';
+import * as Dom from './js/Dom';
 
 populate();
 Dom.attachEvents();
