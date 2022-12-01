@@ -210,6 +210,8 @@ function setActiveProject(projectId) {
 
   activeProject.classList.add('active-project');
 
+  _todosProject.textContent = activeProject.textContent;
+
   _todoList.innerHTML = '';
 
   for (let todo of todos) {
@@ -221,7 +223,6 @@ function addProject(data) {
   const project = _createProject(data);
   project.addEventListener('click', _handleProjectClick);
   _projectList.appendChild(project);
-  _todosProject.textContent = data.title;
   eventEmitter.emit('project-render', project);
 }
 
