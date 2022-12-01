@@ -88,6 +88,16 @@ function _createTodo(data) {
   return todo;
 }
 
+function _handleProjectClick(event) {
+  let projectId = event.target.dataset.id;
+
+  while (!projectId) {
+    projectId = event.target.parentNode.dataset.id;
+  }
+
+  setActiveProject(projectId);
+}
+
 function _createProject(data) {
   const project = document.createElement('li');
   project.dataset.id = data.id;
@@ -209,6 +219,7 @@ function setActiveProject(projectId) {
 
 function addProject(data) {
   const project = _createProject(data);
+  project.addEventListener('click', _handleProjectClick);
   _projectList.appendChild(project);
   _todosProject.textContent = data.title;
   eventEmitter.emit('project-render', project);
