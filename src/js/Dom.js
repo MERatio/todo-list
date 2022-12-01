@@ -88,24 +88,6 @@ function _createTodo(data) {
   return todo;
 }
 
-function _handleFinishedProjectCreation(event) {
-  event.preventDefault();
-
-  const projectForm = document.querySelector('.js-project-form');
-  const projectTitleInput = projectForm.querySelector('.js-project-input');
-
-  if (projectForm && event.target !== projectTitleInput) {
-    const title = projectTitleInput.value;
-    if (title) {
-      Project.create({ title });
-    }
-    _newProjectBtn.removeAttribute('disabled');
-    projectForm.removeEventListener('submit', _handleFinishedProjectCreation);
-    projectForm.remove();
-    window.removeEventListener('click', _handleFinishedProjectCreation);
-  }
-}
-
 function _createProject(data) {
   const project = document.createElement('li');
   project.dataset.id = data.id;
@@ -142,6 +124,24 @@ function _createProject(data) {
   return project;
 }
 
+function _handleFinishedProjectCreation(event) {
+  event.preventDefault();
+
+  const projectForm = document.querySelector('.js-project-form');
+  const projectTitleInput = projectForm.querySelector('.js-project-input');
+
+  if (projectForm && event.target !== projectTitleInput) {
+    const title = projectTitleInput.value;
+    if (title) {
+      Project.create({ title });
+    }
+    _newProjectBtn.removeAttribute('disabled');
+    projectForm.removeEventListener('submit', _handleFinishedProjectCreation);
+    projectForm.remove();
+    window.removeEventListener('click', _handleFinishedProjectCreation);
+  }
+}
+
 function _createProjectForm() {
   const projectForm = document.createElement('form');
   projectForm.classList.add('js-project-form');
@@ -173,6 +173,7 @@ function _handleNewProjectBtnClick(event) {
 
   window.addEventListener('click', _handleFinishedProjectCreation);
 }
+
 function _handleMenuClick() {
   const _menuBtnIconName = _projectsNav.classList.contains('hidden')
     ? 'close-outline'
@@ -183,9 +184,9 @@ function _handleMenuClick() {
   _projectsNav.classList.toggle('block');
 }
 
-function attachEvents() {
-  _menuBtn.addEventListener('click', _handleMenuClick);
-  _newProjectBtn.addEventListener('click', _handleNewProjectBtnClick);
+function addTodo(data) {
+  const todo = _createTodo(data);
+  _todoList.appendChild(todo);
 }
 
 function setActiveProject(projectId) {
@@ -213,9 +214,9 @@ function addProject(data) {
   eventEmitter.emit('project-render', project);
 }
 
-function addTodo(data) {
-  const todo = _createTodo(data);
-  _todoList.appendChild(todo);
+function attachEvents() {
+  _menuBtn.addEventListener('click', _handleMenuClick);
+  _newProjectBtn.addEventListener('click', _handleNewProjectBtnClick);
 }
 
-export { attachEvents, setActiveProject, addProject, addTodo };
+export { addTodo, setActiveProject, addProject, attachEvents };
