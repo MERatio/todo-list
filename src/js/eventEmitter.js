@@ -14,7 +14,7 @@ eventEmitter.on('project-create', (project) => {
 
 eventEmitter.on('project-render', (project) => {
   const projectId = project.dataset.id;
-  Dom.setNewActiveProject(projectId);
+  Dom.setActiveProject(projectId);
 });
 
 eventEmitter.on('todo-create', (todo) => {

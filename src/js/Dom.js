@@ -188,7 +188,7 @@ function attachEvents() {
   _newProjectBtn.addEventListener('click', _handleNewProjectBtnClick);
 }
 
-function setNewActiveProject(projectId) {
+function setActiveProject(projectId) {
   const prevActiveProject = document.querySelector('.active-project');
   const activeProject = document.querySelector(`[data-id="${projectId}"]`);
   const todos = Todo.findByProjectId(projectId);
@@ -218,4 +218,4 @@ function addTodo(data) {
   _todoList.appendChild(todo);
 }
 
-export { attachEvents, setNewActiveProject, addProject, addTodo };
+export { attachEvents, setActiveProject, addProject, addTodo };
