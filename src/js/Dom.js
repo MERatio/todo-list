@@ -111,6 +111,7 @@ function _createProject(data) {
     'pl-4',
     'hover:bg-gray-50'
   );
+  project.addEventListener('click', _handleProjectClick);
 
   const title = document.createElement('span');
   title.textContent = data.title;
@@ -155,6 +156,7 @@ function _handleFinishedProjectCreation(event) {
 function _createProjectForm() {
   const projectForm = document.createElement('form');
   projectForm.classList.add('js-project-form');
+  projectForm.addEventListener('submit', _handleFinishedProjectCreation);
   _projectList.appendChild(projectForm);
 
   const projectTitleInput = document.createElement('input');
@@ -177,7 +179,6 @@ function _handleNewProjectBtnClick(event) {
   _newProjectBtn.setAttribute('disabled', '');
 
   const projectForm = _createProjectForm();
-  projectForm.addEventListener('submit', _handleFinishedProjectCreation);
   const projectTitleInput = projectForm.querySelector('.js-project-input');
   projectTitleInput.focus();
 
@@ -221,7 +222,6 @@ function setActiveProject(projectId) {
 
 function addProject(data) {
   const project = _createProject(data);
-  project.addEventListener('click', _handleProjectClick);
   _projectList.appendChild(project);
   eventEmitter.emit('project-render', project);
 }
