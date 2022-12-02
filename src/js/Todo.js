@@ -16,7 +16,7 @@ Todo.todos = [];
 
 Todo.create = ({ id, title, description, dueDate, priority, projectId }) => {
   const todo = Todo(id, title, description, dueDate, priority, projectId);
-  eventEmitter.emit('todo-create', todo);
+  eventEmitter.emit('todo-data-create', todo);
 };
 
 Todo.findByProjectId = (projectId) => {

@@ -10,7 +10,8 @@ Project.activeProject = null;
 
 Project.create = ({ id, title }) => {
   const project = Project(id, title);
-  eventEmitter.emit('project-create', project);
+  Project.projects = [...Project.projects, project];
+  eventEmitter.emit('project-data-create', project);
 };
 
 export default Project;

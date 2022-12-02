@@ -98,10 +98,10 @@ function _createTodo(data) {
 }
 
 function _handleProjectClick(event) {
-  let projectId = event.target.dataset.id;
+  let projectId = event.target.dataset.projectId;
 
   while (!projectId) {
-    projectId = event.target.parentNode.dataset.id;
+    projectId = event.target.parentNode.dataset.projectId;
   }
 
   setActiveProject(projectId);
@@ -109,7 +109,7 @@ function _handleProjectClick(event) {
 
 function _createProject(data) {
   const project = document.createElement('li');
-  project.dataset.id = data.id;
+  project.dataset.projectId = data.id;
   project.classList.add(
     'js-project',
     'active-project',
@@ -223,7 +223,9 @@ function addTodo(data) {
 
 function setActiveProject(projectId) {
   const prevActiveProject = document.querySelector('.active-project');
-  const activeProject = document.querySelector(`[data-id="${projectId}"]`);
+  const activeProject = document.querySelector(
+    `[data-project-id="${projectId}"]`
+  );
   const todos = Todo.findByProjectId(projectId);
 
   if (prevActiveProject) {
