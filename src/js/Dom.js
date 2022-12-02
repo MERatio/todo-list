@@ -11,6 +11,11 @@ const _projectList = document.querySelector('.js-project-list');
 const _todosProject = document.querySelector('.js-todos-project');
 const _todoList = document.querySelector('.js-todo-list');
 
+function _handleDeleteTodoBtnClick(event) {
+  const todoId = event.target.dataset.todoId;
+  Todo.delete(todoId);
+}
+
 function _createTodo(data) {
   const priorityColors = {
     1: 'bg-orange-200',
@@ -21,6 +26,7 @@ function _createTodo(data) {
 
   const todo = document.createElement('li');
   todo.classList.add(`${priorityColors[data.priority]}`, 'p-2');
+  todo.dataset.todoId = data.id;
 
   const topDiv = document.createElement('div');
   topDiv.classList.add('flex', 'items-center');
@@ -66,6 +72,7 @@ function _createTodo(data) {
   const deleteBtn = document.createElement('button');
   deleteBtn.setAttribute('type', 'button');
   deleteBtn.classList.add(
+    'js-delete-todo-btn',
     'ml-2',
     'flex',
     'cursor-pointer',
@@ -74,6 +81,8 @@ function _createTodo(data) {
   );
   deleteBtn.setAttribute('title', 'Delete todo');
   deleteBtn.setAttribute('aria-label', 'Delete todo');
+  deleteBtn.dataset.todoId = data.id;
+  deleteBtn.addEventListener('click', _handleDeleteTodoBtnClick);
   topDiv.appendChild(deleteBtn);
 
   const deleteBtnIcon = document.createElement('ion-icon');
@@ -195,6 +204,18 @@ function _handleMenuClick() {
   _projectsNav.classList.toggle('block');
 }
 
+function deleteTodo(todoId) {
+  const todo = _todoList.querySelector(`[data-todo-id="${todoId}"]`);
+
+  if (!todo) {
+    return;
+  }
+
+  const deleteTodoBtn = todo.querySelector('.js-delete-todo-btn');
+  deleteTodoBtn.removeEventListener('click', _handleDeleteTodoBtnClick);
+  todo.remove();
+}
+
 function addTodo(data) {
   const todo = _createTodo(data);
   _todoList.appendChild(todo);
@@ -231,4 +252,4 @@ function attachEvents() {
   _newProjectBtn.addEventListener('click', _handleNewProjectBtnClick);
 }
 
-export { addTodo, setActiveProject, addProject, attachEvents };
+export { deleteTodo, addTodo, setActiveProject, addProject, attachEvents };

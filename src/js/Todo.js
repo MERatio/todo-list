@@ -24,4 +24,9 @@ Todo.findByProjectId = (projectId) => {
   return result;
 };
 
+Todo.delete = (todoId) => {
+  Todo.todos = Todo.todos.filter((todo) => todo.id !== todoId);
+  eventEmitter.emit('todo-data-delete', todoId);
+};
+
 export default Todo;
