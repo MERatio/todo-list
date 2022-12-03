@@ -249,6 +249,11 @@ function deleteProject(projectId) {
 }
 
 function setActiveProject(projectId) {
+  if (projectId === null) {
+    _todosProject.textContent = '';
+    return;
+  }
+
   const prevActiveProject = document.querySelector('.active-project');
   const activeProject = document.querySelector(
     `[data-project-id="${projectId}"]`

@@ -24,6 +24,8 @@ eventEmitter.on('project-data-delete', (projectId) => {
 eventEmitter.on('project-dom-delete', () => {
   if (Project.projects.length) {
     Dom.setActiveProject(Project.projects[0].id);
+  } else {
+    Dom.setActiveProject(null);
   }
 });
 
