@@ -97,6 +97,13 @@ function _createTodo(data) {
   return todo;
 }
 
+function _handleDeleteProjectBtnClick(event) {
+  event.stopPropagation();
+
+  const projectId = event.target.dataset.projectId;
+  Project.delete(projectId);
+}
+
 function _handleProjectClick(event) {
   let projectId = event.target.dataset.projectId;
 
@@ -129,6 +136,7 @@ function _createProject(data) {
   const deleteBtn = document.createElement('button');
   deleteBtn.setAttribute('type', 'button');
   deleteBtn.classList.add(
+    'js-delete-project-btn',
     'flex',
     'cursor-pointer',
     'items-center',
@@ -136,6 +144,8 @@ function _createProject(data) {
   );
   deleteBtn.setAttribute('title', 'Delete project');
   deleteBtn.setAttribute('aria-label', 'Delete projects');
+  deleteBtn.dataset.projectId = data.id;
+  deleteBtn.addEventListener('click', _handleDeleteProjectBtnClick);
   const closeIcon = document.createElement('ion-icon');
   closeIcon.setAttribute('name', 'close-outline');
   deleteBtn.appendChild(closeIcon);
@@ -221,6 +231,23 @@ function addTodo(data) {
   _todoList.appendChild(todo);
 }
 
+function deleteProject(projectId) {
+  const project = _projectList.querySelector(
+    `[data-project-id="${projectId}"]`
+  );
+
+  if (!project) {
+    return;
+  }
+
+  const deleteProjectBtn = project.querySelector('.js-delete-project-btn');
+  project.removeEventListener('click', _handleProjectClick);
+  deleteProjectBtn.removeEventListener('click', _handleDeleteProjectBtnClick);
+  project.remove();
+
+  eventEmitter.emit('project-dom-delete');
+}
+
 function setActiveProject(projectId) {
   const prevActiveProject = document.querySelector('.active-project');
   const activeProject = document.querySelector(
@@ -254,4 +281,11 @@ function attachEvents() {
   _newProjectBtn.addEventListener('click', _handleNewProjectBtnClick);
 }
 
-export { deleteTodo, addTodo, setActiveProject, addProject, attachEvents };
+export {
+  deleteTodo,
+  addTodo,
+  deleteProject,
+  setActiveProject,
+  addProject,
+  attachEvents,
+};

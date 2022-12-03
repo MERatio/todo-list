@@ -11,6 +11,22 @@ eventEmitter.on('project-data-create', (project) => {
   Dom.addProject(project);
 });
 
+eventEmitter.on('project-data-delete', (projectId) => {
+  localStorage.setItem('projects', JSON.stringify(Project.projects));
+  Dom.deleteProject(projectId);
+
+  const projectsTodos = Todo.findByProjectId(projectId);
+  for (const projectTodo of projectsTodos) {
+    Todo.delete(projectTodo.id);
+  }
+});
+
+eventEmitter.on('project-dom-delete', () => {
+  if (Project.projects.length) {
+    Dom.setActiveProject(Project.projects[0].id);
+  }
+});
+
 eventEmitter.on('project-render', (project) => {
   const projectId = project.dataset.projectId;
   Dom.setActiveProject(projectId);

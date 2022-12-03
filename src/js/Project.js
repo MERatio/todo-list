@@ -14,4 +14,11 @@ Project.create = ({ id, title }) => {
   eventEmitter.emit('project-data-create', project);
 };
 
+Project.delete = (projectId) => {
+  Project.projects = Project.projects.filter(
+    (project) => project.id !== projectId
+  );
+  eventEmitter.emit('project-data-delete', projectId);
+};
+
 export default Project;
