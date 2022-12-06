@@ -16,6 +16,12 @@ function _handleDeleteTodoBtnClick(event) {
   Todo.delete(todoId);
 }
 
+function _handleCompleteTodoBtnClick(event) {
+  const todoId = event.target.dataset.todoId;
+  const todoData = Todo.findById(todoId);
+  Todo.update(todoId, { ...todoData, isComplete: !todoData.isComplete });
+}
+
 function _createTodo(data) {
   const priorityColors = {
     1: 'bg-orange-200',
@@ -42,14 +48,23 @@ function _createTodo(data) {
   );
   completeBtn.setAttribute('title', 'Mark as complete');
   completeBtn.setAttribute('aria-label', 'Mark as complete');
+  completeBtn.dataset.todoId = data.id;
+  completeBtn.addEventListener('click', _handleCompleteTodoBtnClick);
   topDiv.appendChild(completeBtn);
 
   const completeBtnIcon = document.createElement('ion-icon');
-  completeBtnIcon.setAttribute('name', 'ellipse-outline');
+  completeBtnIcon.setAttribute(
+    'name',
+    `${data.isComplete ? 'ellipse' : 'ellipse-outline'}`
+  );
   completeBtn.appendChild(completeBtnIcon);
 
   const title = document.createElement('p');
-  title.classList.add('ml-1', 'mr-auto');
+  title.classList.add(
+    `${data.isComplete ? 'line-through' : 'no-underline'}`,
+    'ml-1',
+    'mr-auto'
+  );
   title.textContent = data.title;
   topDiv.appendChild(title);
 
@@ -226,6 +241,12 @@ function deleteTodo(todoId) {
   todo.remove();
 }
 
+function updateTodo(todoId, data) {
+  const todo = _todoList.querySelector(`[data-todo-id="${todoId}"]`);
+  const newTodo = _createTodo(data);
+  todo.parentNode.replaceChild(newTodo, todo);
+}
+
 function addTodo(data) {
   const todo = _createTodo(data);
   _todoList.appendChild(todo);
@@ -288,6 +309,7 @@ function attachEvents() {
 
 export {
   deleteTodo,
+  updateTodo,
   addTodo,
   deleteProject,
   setActiveProject,

@@ -42,6 +42,10 @@ eventEmitter.on('todo-data-create', (todo) => {
   }
 });
 
+eventEmitter.on('todo-data-update', (todoId, todo) => {
+  Dom.updateTodo(todoId, todo);
+});
+
 eventEmitter.on('todo-data-delete', (todoId) => {
   localStorage.setItem('todos', JSON.stringify(Todo.todos));
   Dom.deleteTodo(todoId);

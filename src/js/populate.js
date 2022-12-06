@@ -32,6 +32,7 @@ function addTodos(projects) {
         description: faker.lorem.sentence(),
         dueDate: faker.date.soon(),
         priority: getRandomItem([1, 2, 3, 4]),
+        isComplete: getRandomItem([true, false]),
         projectId: getRandomItem(projects).id,
       });
     }
