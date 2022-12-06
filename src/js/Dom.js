@@ -32,7 +32,7 @@ function _createTodo(todoData) {
 
   const todo = document.createElement('li');
   todo.classList.add(`${priorityColors[todoData.priority]}`, 'p-2');
-  todo.dataset.todoId = todoData.id;
+  todo.dataset.id = todoData.id;
 
   const topDiv = document.createElement('div');
   topDiv.classList.add('flex', 'items-center');
@@ -120,10 +120,10 @@ function _handleDeleteProjectBtnClick(event) {
 }
 
 function _handleProjectClick(event) {
-  let projectId = event.target.dataset.projectId;
+  let projectId = event.target.dataset.id;
 
   while (!projectId) {
-    projectId = event.target.parentNode.dataset.projectId;
+    projectId = event.target.parentNode.dataset.id;
   }
 
   setActiveProject(projectId);
@@ -131,7 +131,7 @@ function _handleProjectClick(event) {
 
 function _createProject(projectData) {
   const project = document.createElement('li');
-  project.dataset.projectId = projectData.id;
+  project.dataset.id = projectData.id;
   project.classList.add(
     'js-project',
     'active-project',
@@ -230,7 +230,7 @@ function _handleMenuClick() {
 }
 
 function deleteTodo(todoId) {
-  const todo = _todoList.querySelector(`[data-todo-id="${todoId}"]`);
+  const todo = _todoList.querySelector(`[data-id="${todoId}"]`);
 
   if (!todo) {
     return;
@@ -242,7 +242,7 @@ function deleteTodo(todoId) {
 }
 
 function updateTodo(todoId, todoData) {
-  const todo = _todoList.querySelector(`[data-todo-id="${todoId}"]`);
+  const todo = _todoList.querySelector(`[data-id="${todoId}"]`);
   const newTodo = _createTodo(todoData);
   todo.parentNode.replaceChild(newTodo, todo);
 }
@@ -253,9 +253,7 @@ function addTodo(todoData) {
 }
 
 function deleteProject(projectId) {
-  const project = _projectList.querySelector(
-    `[data-project-id="${projectId}"]`
-  );
+  const project = _projectList.querySelector(`[data-id="${projectId}"]`);
 
   if (!project) {
     return;
@@ -275,19 +273,17 @@ function setActiveProject(projectId) {
     return;
   }
 
-  const prevActiveProject = document.querySelector('.active-project');
-  const activeProject = document.querySelector(
-    `[data-project-id="${projectId}"]`
-  );
+  const activeProject = document.querySelector('.active-project');
+  const newActiveProject = document.querySelector(`[data-id="${projectId}"]`);
   const todos = Todo.findByProjectId(projectId);
 
-  if (prevActiveProject) {
-    prevActiveProject.classList.remove('active-project');
+  if (activeProject) {
+    activeProject.classList.remove('active-project');
   }
 
-  activeProject.classList.add('active-project');
+  newActiveProject.classList.add('active-project');
 
-  _todosProject.textContent = activeProject.textContent;
+  _todosProject.textContent = newActiveProject.textContent;
 
   _todoList.innerHTML = '';
 

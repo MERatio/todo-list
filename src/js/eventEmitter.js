@@ -30,7 +30,7 @@ eventEmitter.on('project-dom-delete', () => {
 });
 
 eventEmitter.on('project-render', (project) => {
-  const projectId = project.dataset.projectId;
+  const projectId = project.dataset.id;
   Dom.setActiveProject(projectId);
 });
 
