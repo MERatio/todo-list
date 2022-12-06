@@ -22,7 +22,7 @@ function _handleCompleteTodoBtnClick(event) {
   Todo.update(todoId, { ...todoData, isComplete: !todoData.isComplete });
 }
 
-function _createTodo(data) {
+function _createTodo(todoData) {
   const priorityColors = {
     1: 'bg-orange-200',
     2: 'bg-orange-300',
@@ -31,8 +31,8 @@ function _createTodo(data) {
   };
 
   const todo = document.createElement('li');
-  todo.classList.add(`${priorityColors[data.priority]}`, 'p-2');
-  todo.dataset.todoId = data.id;
+  todo.classList.add(`${priorityColors[todoData.priority]}`, 'p-2');
+  todo.dataset.todoId = todoData.id;
 
   const topDiv = document.createElement('div');
   topDiv.classList.add('flex', 'items-center');
@@ -48,24 +48,24 @@ function _createTodo(data) {
   );
   completeBtn.setAttribute('title', 'Mark as complete');
   completeBtn.setAttribute('aria-label', 'Mark as complete');
-  completeBtn.dataset.todoId = data.id;
+  completeBtn.dataset.todoId = todoData.id;
   completeBtn.addEventListener('click', _handleCompleteTodoBtnClick);
   topDiv.appendChild(completeBtn);
 
   const completeBtnIcon = document.createElement('ion-icon');
   completeBtnIcon.setAttribute(
     'name',
-    `${data.isComplete ? 'ellipse' : 'ellipse-outline'}`
+    `${todoData.isComplete ? 'ellipse' : 'ellipse-outline'}`
   );
   completeBtn.appendChild(completeBtnIcon);
 
   const title = document.createElement('p');
   title.classList.add(
-    `${data.isComplete ? 'line-through' : 'no-underline'}`,
+    `${todoData.isComplete ? 'line-through' : 'no-underline'}`,
     'ml-1',
     'mr-auto'
   );
-  title.textContent = data.title;
+  title.textContent = todoData.title;
   topDiv.appendChild(title);
 
   const editBtn = document.createElement('button');
@@ -96,7 +96,7 @@ function _createTodo(data) {
   );
   deleteBtn.setAttribute('title', 'Delete todo');
   deleteBtn.setAttribute('aria-label', 'Delete todo');
-  deleteBtn.dataset.todoId = data.id;
+  deleteBtn.dataset.todoId = todoData.id;
   deleteBtn.addEventListener('click', _handleDeleteTodoBtnClick);
   topDiv.appendChild(deleteBtn);
 
@@ -106,7 +106,7 @@ function _createTodo(data) {
 
   const date = document.createElement('p');
   date.classList.add('ml-[30px]', 'text-xs');
-  date.textContent = format(data.dueDate, 'MM/dd/yyyy');
+  date.textContent = format(todoData.dueDate, 'MM/dd/yyyy');
   todo.appendChild(date);
 
   return todo;
@@ -129,9 +129,9 @@ function _handleProjectClick(event) {
   setActiveProject(projectId);
 }
 
-function _createProject(data) {
+function _createProject(projectData) {
   const project = document.createElement('li');
-  project.dataset.projectId = data.id;
+  project.dataset.projectId = projectData.id;
   project.classList.add(
     'js-project',
     'active-project',
@@ -145,7 +145,7 @@ function _createProject(data) {
   project.addEventListener('click', _handleProjectClick);
 
   const title = document.createElement('span');
-  title.textContent = data.title;
+  title.textContent = projectData.title;
   project.appendChild(title);
 
   const deleteBtn = document.createElement('button');
@@ -159,7 +159,7 @@ function _createProject(data) {
   );
   deleteBtn.setAttribute('title', 'Delete project');
   deleteBtn.setAttribute('aria-label', 'Delete projects');
-  deleteBtn.dataset.projectId = data.id;
+  deleteBtn.dataset.projectId = projectData.id;
   deleteBtn.addEventListener('click', _handleDeleteProjectBtnClick);
   const closeIcon = document.createElement('ion-icon');
   closeIcon.setAttribute('name', 'close-outline');
@@ -241,14 +241,14 @@ function deleteTodo(todoId) {
   todo.remove();
 }
 
-function updateTodo(todoId, data) {
+function updateTodo(todoId, todoData) {
   const todo = _todoList.querySelector(`[data-todo-id="${todoId}"]`);
-  const newTodo = _createTodo(data);
+  const newTodo = _createTodo(todoData);
   todo.parentNode.replaceChild(newTodo, todo);
 }
 
-function addTodo(data) {
-  const todo = _createTodo(data);
+function addTodo(todoData) {
+  const todo = _createTodo(todoData);
   _todoList.appendChild(todo);
 }
 
@@ -296,8 +296,8 @@ function setActiveProject(projectId) {
   }
 }
 
-function addProject(data) {
-  const project = _createProject(data);
+function addProject(projectData) {
+  const project = _createProject(projectData);
   _projectList.appendChild(project);
   eventEmitter.emit('project-render', project);
 }
