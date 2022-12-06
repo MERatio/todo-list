@@ -43,6 +43,7 @@ eventEmitter.on('todo-data-create', (todo) => {
 });
 
 eventEmitter.on('todo-data-update', (todoId, todo) => {
+  localStorage.setItem('todos', JSON.stringify(Todo.todos));
   Dom.updateTodo(todoId, todo);
 });
 
