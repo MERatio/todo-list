@@ -273,8 +273,8 @@ function setActiveProject(projectId) {
     return;
   }
 
-  const activeProject = document.querySelector('.active-project');
-  const newActiveProject = document.querySelector(`[data-id="${projectId}"]`);
+  const activeProject = _projectList.querySelector('.active-project');
+  const newActiveProject = _projectList.querySelector(`[data-id="${projectId}"]`);
   const todos = Todo.findByProjectId(projectId);
 
   if (activeProject) {
