@@ -2,6 +2,173 @@
 /******/ 	"use strict";
 var __webpack_exports__ = {};
 
+;// CONCATENATED MODULE: ./node_modules/date-fns/esm/_lib/toInteger/index.js
+function toInteger(dirtyNumber) {
+  if (dirtyNumber === null || dirtyNumber === true || dirtyNumber === false) {
+    return NaN;
+  }
+  var number = Number(dirtyNumber);
+  if (isNaN(number)) {
+    return number;
+  }
+  return number < 0 ? Math.ceil(number) : Math.floor(number);
+}
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
+function _typeof(o) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, _typeof(o);
+}
+;// CONCATENATED MODULE: ./node_modules/date-fns/esm/_lib/requiredArgs/index.js
+function requiredArgs(required, args) {
+  if (args.length < required) {
+    throw new TypeError(required + ' argument' + (required > 1 ? 's' : '') + ' required, but only ' + args.length + ' present');
+  }
+}
+;// CONCATENATED MODULE: ./node_modules/date-fns/esm/toDate/index.js
+
+
+/**
+ * @name toDate
+ * @category Common Helpers
+ * @summary Convert the given argument to an instance of Date.
+ *
+ * @description
+ * Convert the given argument to an instance of Date.
+ *
+ * If the argument is an instance of Date, the function returns its clone.
+ *
+ * If the argument is a number, it is treated as a timestamp.
+ *
+ * If the argument is none of the above, the function returns Invalid Date.
+ *
+ * **Note**: *all* Date arguments passed to any *date-fns* function is processed by `toDate`.
+ *
+ * @param {Date|Number} argument - the value to convert
+ * @returns {Date} the parsed date in the local time zone
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Clone the date:
+ * const result = toDate(new Date(2014, 1, 11, 11, 30, 30))
+ * //=> Tue Feb 11 2014 11:30:30
+ *
+ * @example
+ * // Convert the timestamp to date:
+ * const result = toDate(1392098430000)
+ * //=> Tue Feb 11 2014 11:30:30
+ */
+function toDate(argument) {
+  requiredArgs(1, arguments);
+  var argStr = Object.prototype.toString.call(argument);
+
+  // Clone the date
+  if (argument instanceof Date || _typeof(argument) === 'object' && argStr === '[object Date]') {
+    // Prevent the date to lose the milliseconds when passed to new Date() in IE10
+    return new Date(argument.getTime());
+  } else if (typeof argument === 'number' || argStr === '[object Number]') {
+    return new Date(argument);
+  } else {
+    if ((typeof argument === 'string' || argStr === '[object String]') && typeof console !== 'undefined') {
+      // eslint-disable-next-line no-console
+      console.warn("Starting with v2.0.0-beta.1 date-fns doesn't accept strings as date arguments. Please use `parseISO` to parse strings. See: https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#string-arguments");
+      // eslint-disable-next-line no-console
+      console.warn(new Error().stack);
+    }
+    return new Date(NaN);
+  }
+}
+;// CONCATENATED MODULE: ./node_modules/date-fns/esm/addMilliseconds/index.js
+
+
+
+/**
+ * @name addMilliseconds
+ * @category Millisecond Helpers
+ * @summary Add the specified number of milliseconds to the given date.
+ *
+ * @description
+ * Add the specified number of milliseconds to the given date.
+ *
+ * @param {Date|Number} date - the date to be changed
+ * @param {Number} amount - the amount of milliseconds to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+ * @returns {Date} the new date with the milliseconds added
+ * @throws {TypeError} 2 arguments required
+ *
+ * @example
+ * // Add 750 milliseconds to 10 July 2014 12:45:30.000:
+ * const result = addMilliseconds(new Date(2014, 6, 10, 12, 45, 30, 0), 750)
+ * //=> Thu Jul 10 2014 12:45:30.750
+ */
+function addMilliseconds(dirtyDate, dirtyAmount) {
+  requiredArgs(2, arguments);
+  var timestamp = toDate(dirtyDate).getTime();
+  var amount = toInteger(dirtyAmount);
+  return new Date(timestamp + amount);
+}
+;// CONCATENATED MODULE: ./node_modules/date-fns/esm/addHours/index.js
+
+
+
+var MILLISECONDS_IN_HOUR = 3600000;
+
+/**
+ * @name addHours
+ * @category Hour Helpers
+ * @summary Add the specified number of hours to the given date.
+ *
+ * @description
+ * Add the specified number of hours to the given date.
+ *
+ * @param {Date|Number} date - the date to be changed
+ * @param {Number} amount - the amount of hours to be added. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+ * @returns {Date} the new date with the hours added
+ * @throws {TypeError} 2 arguments required
+ *
+ * @example
+ * // Add 2 hours to 10 July 2014 23:00:00:
+ * const result = addHours(new Date(2014, 6, 10, 23, 0), 2)
+ * //=> Fri Jul 11 2014 01:00:00
+ */
+function addHours(dirtyDate, dirtyAmount) {
+  requiredArgs(2, arguments);
+  var amount = toInteger(dirtyAmount);
+  return addMilliseconds(dirtyDate, amount * MILLISECONDS_IN_HOUR);
+}
+;// CONCATENATED MODULE: ./node_modules/date-fns/esm/startOfTomorrow/index.js
+/**
+ * @name startOfTomorrow
+ * @category Day Helpers
+ * @summary Return the start of tomorrow.
+ * @pure false
+ *
+ * @description
+ * Return the start of tomorrow.
+ *
+ * > ⚠️ Please note that this function is not present in the FP submodule as
+ * > it uses `new Date()` internally hence impure and can't be safely curried.
+ *
+ * @returns {Date} the start of tomorrow
+ *
+ * @example
+ * // If today is 6 October 2014:
+ * const result = startOfTomorrow()
+ * //=> Tue Oct 7 2014 00:00:00
+ */
+function startOfTomorrow() {
+  var now = new Date();
+  var year = now.getFullYear();
+  var month = now.getMonth();
+  var day = now.getDate();
+  var date = new Date(0);
+  date.setFullYear(year, month, day + 1);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
 ;// CONCATENATED MODULE: ./node_modules/uuid/dist/esm-browser/native.js
 const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
 /* harmony default export */ const esm_browser_native = ({
@@ -116,6 +283,15 @@ function add(key, value) {
 	localStorage.setItem(key, JSON.stringify(array));
 }
 
+function findByIdAndUpdate(key, id, updatedProps) {
+	let array = find(key, {});
+	const value = array.find((el) => el.id === id);
+	const updatedValue = Object.assign(value, updatedProps);
+	array = array.map((el) => (el.id === id ? updatedValue : el));
+	localStorage.setItem(key, JSON.stringify(array));
+	return updatedValue;
+}
+
 function deleteById(key, id) {
 	let array = find(key, {});
 	array = array.filter((el) => el.id !== id);
@@ -129,8 +305,8 @@ function deleteById(key, id) {
 
 
 function Project_find(filter) {
-	const project = find('projects', filter);
-	return project;
+	const projects = storage.find('projects', filter);
+	return projects;
 }
 
 function create(name) {
@@ -140,7 +316,42 @@ function create(name) {
 }
 
 function Project_deleteById(id) {
-	deleteById('projects', id);
+	storage.deleteById('projects', id);
+}
+
+
+
+;// CONCATENATED MODULE: ./src/js/Todo.js
+
+
+
+function Todo_find(filter) {
+	let todos = find('todos', filter);
+	// dueDate is string after getting it from localStorage, and using JSON.parse.
+	todos = todos.map((todo) => ({ ...todo, dueDate: new Date(todo.dueDate) }));
+	return todos;
+}
+
+function Todo_create(projectId, title, description, dueDate, priority) {
+	const todo = {
+		id: esm_browser_v4(),
+		projectId,
+		title,
+		description,
+		dueDate,
+		priority,
+	};
+	add('todos', todo);
+	return todo;
+}
+
+function Todo_findByIdAndUpdate(id, updatedProps) {
+	const updatedTodo = findByIdAndUpdate('todos', id, updatedProps);
+	return updatedTodo;
+}
+
+function Todo_deleteById(id) {
+	deleteById('todos', id);
 }
 
 
@@ -149,16 +360,62 @@ function Project_deleteById(id) {
 
 
 
+
+
 localStorage.clear();
 
+// Projects
 const defaultProject = create('Default');
 const workoutProject = create('Workout');
-const foundDefaultProject = Project_find({ id: defaultProject.id })[0];
+// const foundDefaultProject = Project.find({ id: defaultProject.id })[0];
 
-console.log({ foundDefaultProject });
-console.log({ all: Project_find({}) });
-Project_deleteById(defaultProject.id);
-console.log({ all: Project_find({}) });
+// console.log({ foundDefaultProject });
+// console.log({ projects: Project.find({}) });
+// Project.deleteById(defaultProject.id);
+// console.log({ projects: Project.find({}) });
+
+// Todos
+Todo_create(
+	defaultProject.id,
+	'Fix bed',
+	'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+	addHours(startOfTomorrow(), 8),
+	4,
+);
+Todo_create(
+	defaultProject.id,
+	'Eat',
+	'Lorem ipsum, dolor sit, amet consectetur adipisicing elit.',
+	addHours(startOfTomorrow(), 8),
+	1,
+);
+
+Todo_create(
+	workoutProject.id,
+	'Squat',
+	'Lorem ipsum, dolor sit.',
+	addHours(startOfTomorrow(), 16),
+	2,
+);
+
+const defaultProjectTodos = Todo_find({ projectId: defaultProject.id });
+const firstDefaultProjectTodo = defaultProjectTodos[0];
+const secondDefaultProjectTodo = defaultProjectTodos[1];
+console.log({ defaultProjectTodos });
+const updatedFirstDefaultProjectTodo = Todo_findByIdAndUpdate(
+	firstDefaultProjectTodo.id,
+	{ title: 'Wake up', priority: 1 },
+);
+console.log({
+	defaultProjectTodos: Todo_find({ projectId: defaultProject.id }),
+});
+Todo_deleteById(secondDefaultProjectTodo.id);
+console.log({
+	defaultProjectTodos: Todo_find({ projectId: defaultProject.id }),
+});
+
+const workoutProjectTodos = Todo_find({ projectId: workoutProject.id });
+console.log({ workoutProjectTodos });
 
 /******/ })()
 ;
