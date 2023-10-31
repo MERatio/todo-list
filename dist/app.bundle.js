@@ -298,6 +298,16 @@ function deleteById(key, id) {
 	localStorage.setItem(key, JSON.stringify(array));
 }
 
+function deleteMany(key, conditions) {
+	let array = find(key, {});
+	array = array.filter((el) => {
+		for (const conditionKey in Object.keys(conditions)) {
+			return !(el[conditionKey] === conditions[conditionKey]);
+		}
+	});
+	localStorage.setItem(key, JSON.stringify(array));
+}
+
 
 
 ;// CONCATENATED MODULE: ./src/js/Project.js
@@ -305,7 +315,7 @@ function deleteById(key, id) {
 
 
 function Project_find(filter) {
-	const projects = storage.find('projects', filter);
+	const projects = find('projects', filter);
 	return projects;
 }
 
@@ -316,7 +326,8 @@ function create(name) {
 }
 
 function Project_deleteById(id) {
-	storage.deleteById('projects', id);
+	deleteById('projects', id);
+	deleteMany('todos', { projectId: id });
 }
 
 
@@ -416,6 +427,12 @@ console.log({
 
 const workoutProjectTodos = Todo_find({ projectId: workoutProject.id });
 console.log({ workoutProjectTodos });
+
+Project_deleteById(defaultProject.id);
+console.log({ projects: Project_find({}) });
+console.log({
+	defaultProjectTodos: Todo_find({ projectId: defaultProject.id }),
+});
 
 /******/ })()
 ;

@@ -14,6 +14,7 @@ function create(name) {
 
 function deleteById(id) {
 	storage.deleteById('projects', id);
+	storage.deleteMany('todos', { projectId: id });
 }
 
 export { find, create, deleteById };

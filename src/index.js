@@ -57,3 +57,9 @@ console.log({
 
 const workoutProjectTodos = Todo.find({ projectId: workoutProject.id });
 console.log({ workoutProjectTodos });
+
+Project.deleteById(defaultProject.id);
+console.log({ projects: Project.find({}) });
+console.log({
+	defaultProjectTodos: Todo.find({ projectId: defaultProject.id }),
+});

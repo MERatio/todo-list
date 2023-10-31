@@ -38,4 +38,14 @@ function deleteById(key, id) {
 	localStorage.setItem(key, JSON.stringify(array));
 }
 
-export { find, add, findByIdAndUpdate, deleteById };
+function deleteMany(key, conditions) {
+	let array = find(key, {});
+	array = array.filter((el) => {
+		for (const conditionKey in Object.keys(conditions)) {
+			return !(el[conditionKey] === conditions[conditionKey]);
+		}
+	});
+	localStorage.setItem(key, JSON.stringify(array));
+}
+
+export { find, add, findByIdAndUpdate, deleteById, deleteMany };
