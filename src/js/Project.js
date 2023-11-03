@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { EE } from './events';
 import * as storage from './storage';
 
 function find(filter) {
@@ -9,6 +10,7 @@ function find(filter) {
 function create(name) {
 	const project = { id: uuidv4(), name };
 	storage.add('projects', project);
+	EE.emit('project-created', project);
 	return project;
 }
 

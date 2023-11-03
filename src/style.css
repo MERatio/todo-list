@@ -1,9 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.container {
-	@apply shadow-md;
-	width: 300px;
-	height: 300px;
+@layer components {
+	.dialog {
+		@apply absolute left-1/2 top-1/3 m-0 w-full max-w-md -translate-x-1/2 -translate-y-1/2 bg-transparent px-2 sm:px-0;
+	}
+
+	.inner-dialog {
+		@apply relative rounded bg-white p-3 text-neutral-700 sm:p-4;
+	}
+
+	.dialog-title {
+		@apply text-center font-medium sm:text-lg md:text-xl;
+	}
+
+	.label {
+		@apply text-xs text-neutral-600;
+	}
+
+	.control-group {
+		@apply mt-2 flex flex-col;
+	}
+
+	.input-field {
+		@apply rounded border border-solid border-gray-100 p-1 text-inherit outline-gray-200;
+	}
+
+	.btn {
+		@apply rounded px-2 py-1;
+	}
+
+	.btn-main {
+		@apply bg-red-600 text-white hover:bg-red-700;
+	}
+
+	.fill-main {
+		@apply fill-red-600 hover:fill-red-700;
+	}
 }
