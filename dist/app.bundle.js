@@ -13346,6 +13346,7 @@ const openDialogBtns = document.querySelectorAll('.openDialogBtn');
 const closeDialogBtns = document.querySelectorAll('.closeDialogBtn');
 const dialogs = document.querySelectorAll('.dialog');
 const projectList = document.getElementById('projectList');
+const projectForm = document.getElementById('projectForm');
 const todosProjectTitle = document.getElementById('todosProjectTitle');
 const todoList = document.getElementById('todoList');
 
@@ -13369,7 +13370,9 @@ function handleOpenDialogBtnClick(e) {
 	const btn = e.currentTarget;
 	const dialog = document.getElementById(btn.dataset.dialogId);
 	const form = dialog.querySelector('form');
+	const formOperation = btn.dataset.formOperation;
 	const submitBtn = form.querySelector('button[type="submit"]');
+	form.dataset.formOperation = formOperation;
 	submitBtn.textContent = btn.dataset.submitBtnText;
 	dialog.showModal();
 }
@@ -13385,6 +13388,14 @@ function handleDialogClosed(e) {
 	form.reset();
 }
 
+function handleProjectFormSubmit() {
+	const titleInput = projectForm.querySelector('#projectTitle');
+	if (projectForm.dataset.formOperation === 'new') {
+		delete projectForm.dataset.formOperation;
+		EE.emit('new-project', titleInput.value);
+	}
+}
+
 function addEventListeners() {
 	barsBtn.addEventListener('click', handleBarsBtnClick);
 	for (const openDialogBtn of openDialogBtns) {
@@ -13396,6 +13407,7 @@ function addEventListeners() {
 	for (const dialog of dialogs) {
 		dialog.addEventListener('close', handleDialogClosed);
 	}
+	projectForm.addEventListener('submit', handleProjectFormSubmit);
 }
 
 function handleProjectLiClick(e) {
@@ -13786,6 +13798,11 @@ function Todo_deleteById(id) {
 const EE = new node_modules_eventemitter3();
 
 function addEvents() {
+	EE.on('new-project', (title) => {
+		const project = create(title);
+		switchProject(project, []);
+	});
+
 	EE.on('project-created', (project) => {
 		renderProject(project);
 	});

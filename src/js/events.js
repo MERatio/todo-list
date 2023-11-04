@@ -6,6 +6,11 @@ import * as Todo from './Todo';
 const EE = new EventEmitter();
 
 function addEvents() {
+	EE.on('new-project', (title) => {
+		const project = Project.create(title);
+		switchProject(project, []);
+	});
+
 	EE.on('project-created', (project) => {
 		renderProject(project);
 	});
