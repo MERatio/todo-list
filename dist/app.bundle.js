@@ -13410,7 +13410,7 @@ function addEventListeners() {
 	projectForm.addEventListener('submit', handleProjectFormSubmit);
 }
 
-function handleProjectLiClick(e) {
+function handleSwitchProjectBtnClick(e) {
 	const oldActiveProjectLi = projectList.querySelector(`[data-active-project]`);
 	const oldActiveProjectId = oldActiveProjectLi.dataset.projectId;
 	const newActiveProjectId = e.currentTarget.dataset.projectId;
@@ -13431,15 +13431,20 @@ function createProjectLi(project) {
 		'hover:border-red-600',
 	);
 	projectLi.dataset.projectId = project.id;
-	projectLi.addEventListener('click', handleProjectLiClick);
-	projectLi.innerHTML = `
-		<button
-			type="button"
-			class="switchProjectBtn w-full text-left sm:text-lg"
-		>
-			${sanitize_html_default()(project.title)}
-		</button>
-	`;
+
+	const switchProjectBtn = document.createElement('button');
+	switchProjectBtn.setAttribute('type', 'button');
+	switchProjectBtn.classList.add(
+		'switchProjectBtn',
+		'w-full',
+		'text-left',
+		'sm:text-lg',
+	);
+	switchProjectBtn.textContent = sanitize_html_default()(project.title);
+	switchProjectBtn.dataset.projectId = project.id;
+	switchProjectBtn.addEventListener('click', handleSwitchProjectBtnClick);
+	projectLi.append(switchProjectBtn);
+
 	return projectLi;
 }
 
@@ -13573,7 +13578,7 @@ function switchProject(project, todos) {
 		oldActiveProjectLi.classList.add('border-transparent');
 		const oldActiveProjectLiBtn =
 			oldActiveProjectLi.querySelector('.switchProjectBtn');
-		oldActiveProjectLiBtn.classList.remove('cursor-pointer');
+		oldActiveProjectLiBtn.classList.remove('cursor-default');
 	}
 
 	newActiveProjectLi.dataset.activeProject = '';
@@ -13586,7 +13591,7 @@ function switchProject(project, todos) {
 	newActiveProjectLi.classList.remove('border-transparent');
 	const newActiveProjectLiBtn =
 		newActiveProjectLi.querySelector('.switchProjectBtn');
-	newActiveProjectLiBtn.classList.add('cursor-pointer');
+	newActiveProjectLiBtn.classList.add('cursor-default');
 
 	todosProjectTitle.textContent = project.title;
 
