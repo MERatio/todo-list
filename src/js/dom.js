@@ -185,7 +185,7 @@ function createTodoLi(todo) {
 		</details>
 		<button
 			type="button"
-			class="editTodoBtn fill-main absolute right-8 top-4 flex items-center text-2xl"
+			class="editTodoBtn fill-main absolute right-8 top-4 text-2xl"
 			title="Edit todo"
 			data-dialog-id="todoDialog"
 			data-submit-btn-text="Update"
