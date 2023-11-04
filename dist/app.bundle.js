@@ -13419,7 +13419,7 @@ function createProjectLi(project) {
 			type="button"
 			class="w-full rounded px-2 py-1 text-left hover:bg-slate-100 sm:text-lg md:px-3"
 		>
-			${sanitize_html_default()(project.name)}
+			${sanitize_html_default()(project.title)}
 		</button>
 	`;
 	return projectLi;
@@ -13566,7 +13566,7 @@ function switchProject(project, todos) {
 	);
 	oldActiveProjectLiBtn.classList.remove('hover:bg-slate-100');
 
-	todosProjectTitle.textContent = project.name;
+	todosProjectTitle.textContent = project.title;
 
 	clearTodoList();
 	for (const todo of todos) {
@@ -13728,8 +13728,8 @@ function Project_find(filter) {
 	return projects;
 }
 
-function create(name) {
-	const project = { id: esm_browser_v4(), name };
+function create(title) {
+	const project = { id: esm_browser_v4(), title };
 	add('projects', project);
 	EE.emit('project-created', project);
 	return project;

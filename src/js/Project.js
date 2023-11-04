@@ -7,8 +7,8 @@ function find(filter) {
 	return projects;
 }
 
-function create(name) {
-	const project = { id: uuidv4(), name };
+function create(title) {
+	const project = { id: uuidv4(), title };
 	storage.add('projects', project);
 	EE.emit('project-created', project);
 	return project;

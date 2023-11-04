@@ -81,7 +81,7 @@ function createProjectLi(project) {
 			type="button"
 			class="w-full rounded px-2 py-1 text-left hover:bg-slate-100 sm:text-lg md:px-3"
 		>
-			${sanitizeHtml(project.name)}
+			${sanitizeHtml(project.title)}
 		</button>
 	`;
 	return projectLi;
@@ -228,7 +228,7 @@ function switchProject(project, todos) {
 	);
 	oldActiveProjectLiBtn.classList.remove('hover:bg-slate-100');
 
-	todosProjectTitle.textContent = project.name;
+	todosProjectTitle.textContent = project.title;
 
 	clearTodoList();
 	for (const todo of todos) {
