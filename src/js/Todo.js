@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import * as storage from './storage';
+import { EE } from './events';
 
 function find(filter) {
 	let todos = storage.find('todos', filter);
@@ -18,6 +19,7 @@ function create(projectId, title, description, dueDate, priority) {
 		priority,
 	};
 	storage.add('todos', todo);
+	EE.emit('todo-created', todo);
 	return todo;
 }
 

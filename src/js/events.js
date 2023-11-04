@@ -48,6 +48,17 @@ function addEvents() {
 		const todos = Todo.find({ projectId });
 		dom.switchProject(project, todos);
 	});
+
+	EE.on(
+		'will-create-todo',
+		(projectId, title, description, dueDate, priority) => {
+			Todo.create(projectId, title, description, dueDate, priority);
+		},
+	);
+
+	EE.on('todo-created', (todo) => {
+		dom.renderTodo(todo);
+	});
 }
 
 export { EE, addEvents };

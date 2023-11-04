@@ -3,6 +3,7 @@ import formatDate from 'date-fns/format';
 import { EE } from './events';
 
 const barsBtn = document.getElementById('barsBtn');
+const todoForm = document.getElementById('todoForm');
 const projectSection = document.getElementById('projectSection');
 const openDialogBtns = document.querySelectorAll('.openDialogBtn');
 const closeDialogBtns = document.querySelectorAll('.closeDialogBtn');
@@ -85,6 +86,30 @@ function handleProjectFormSubmit() {
 	delete projectForm.dataset.projectId;
 }
 
+function handleTodoFormSubmit() {
+	const formOperation = todoForm.dataset.formOperation;
+	const activeProjectId = projectList.querySelector('[data-active-project]')
+		.dataset.projectId;
+	const title = todoForm.querySelector('#todoTitle').value;
+	const description = todoForm.querySelector('#todoDescription').value;
+	const dueDate = new Date(todoForm.querySelector('#todoDueDate').value);
+	const priority = Number(todoForm.querySelector('#todoPriority').value);
+
+	switch (formOperation) {
+		case 'new':
+			return EE.emit(
+				'will-create-todo',
+				activeProjectId,
+				title,
+				description,
+				dueDate,
+				priority,
+			);
+	}
+
+	delete todoForm.dataset.formOperation;
+}
+
 function addEventListeners() {
 	barsBtn.addEventListener('click', handleBarsBtnClick);
 	for (const openDialogBtn of openDialogBtns) {
@@ -97,6 +122,7 @@ function addEventListeners() {
 		dialog.addEventListener('close', handleDialogClosed);
 	}
 	projectForm.addEventListener('submit', handleProjectFormSubmit);
+	todoForm.addEventListener('submit', handleTodoFormSubmit);
 }
 
 function handleSwitchProjectBtnClick(e) {
@@ -334,10 +360,14 @@ function createTodoLi(todo) {
 	return todoLi;
 }
 
+function renderTodo(todo) {
+	const todoLi = createTodoLi(todo);
+	todoList.append(todoLi);
+}
+
 function renderTodos(todos) {
 	for (const todo of todos) {
-		const todoLi = createTodoLi(todo);
-		todoList.append(todoLi);
+		renderTodo(todo);
 	}
 }
 
@@ -386,5 +416,6 @@ export {
 	removeProject,
 	setTodosTitle,
 	clearTodoList,
+	renderTodo,
 	switchProject,
 };
