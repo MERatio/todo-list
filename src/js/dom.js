@@ -86,12 +86,18 @@ function handleProjectLiClick(e) {
 
 function createProjectLi(project) {
 	const projectLi = document.createElement('li');
+	projectLi.classList.add(
+		'border-b-2',
+		'border-solid',
+		'border-transparent',
+		'hover:border-red-600',
+	);
 	projectLi.dataset.projectId = project.id;
 	projectLi.addEventListener('click', handleProjectLiClick);
 	projectLi.innerHTML = `
 		<button
 			type="button"
-			class="w-full rounded px-2 py-1 text-left hover:bg-slate-100 sm:text-lg md:px-3"
+			class="switchProjectBtn w-full text-left sm:text-lg"
 		>
 			${sanitizeHtml(project.title)}
 		</button>
@@ -220,25 +226,29 @@ function switchProject(project, todos) {
 
 	if (oldActiveProjectLi) {
 		delete oldActiveProjectLi.dataset.activeProject;
-		const oldActiveProjectLiBtn = oldActiveProjectLi.querySelector('button');
-		oldActiveProjectLiBtn.classList.remove(
+		oldActiveProjectLi.classList.remove(
 			'font-medium',
 			'text-red-600',
-			'bg-slate-200',
+			'border-red-600',
 			'cursor-default',
 		);
-		oldActiveProjectLiBtn.classList.add('hover:bg-slate-100');
+		oldActiveProjectLi.classList.add('border-transparent');
+		const oldActiveProjectLiBtn =
+			oldActiveProjectLi.querySelector('.switchProjectBtn');
+		oldActiveProjectLiBtn.classList.remove('cursor-pointer');
 	}
 
 	newActiveProjectLi.dataset.activeProject = '';
-	const oldActiveProjectLiBtn = newActiveProjectLi.querySelector('button');
-	oldActiveProjectLiBtn.classList.add(
+	newActiveProjectLi.classList.add(
 		'font-medium',
 		'text-red-600',
-		'bg-slate-200',
+		'border-red-600',
 		'cursor-default',
 	);
-	oldActiveProjectLiBtn.classList.remove('hover:bg-slate-100');
+	newActiveProjectLi.classList.remove('border-transparent');
+	const newActiveProjectLiBtn =
+		newActiveProjectLi.querySelector('.switchProjectBtn');
+	newActiveProjectLiBtn.classList.add('cursor-pointer');
 
 	todosProjectTitle.textContent = project.title;
 
