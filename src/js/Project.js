@@ -27,6 +27,7 @@ function findByIdAndUpdate(id, updatedProps) {
 function deleteById(id) {
 	storage.deleteById('projects', id);
 	storage.deleteMany('todos', { projectId: id });
+	EE.emit('deleted-project', id);
 }
 
 export { find, create, findByIdAndUpdate, deleteById };
