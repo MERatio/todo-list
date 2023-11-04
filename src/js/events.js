@@ -1,33 +1,26 @@
 import EventEmitter from 'eventemitter3';
-import {
-	renderProject,
-	updateProject,
-	deleteProject,
-	clearTodosTitle,
-	clearTodoList,
-	switchProject,
-} from './dom';
+import * as dom from './dom';
 import * as Project from './Project';
 import * as Todo from './Todo';
 
 const EE = new EventEmitter();
 
 function addEvents() {
-	EE.on('new-project', (title) => {
+	EE.on('will-create-project', (title) => {
 		const project = Project.create(title);
-		switchProject(project, []);
+		dom.switchProject(project, []);
 	});
 
 	EE.on('project-created', (project) => {
-		renderProject(project);
+		dom.renderProject(project);
 	});
 
-	EE.on('edit-project', (projectId, newTitle) => {
+	EE.on('will-update-project', (projectId, newTitle) => {
 		Project.findByIdAndUpdate(projectId, { title: newTitle });
 	});
 
 	EE.on('updated-project', (updatedProject) => {
-		updateProject(updatedProject);
+		dom.updateProject(updatedProject);
 	});
 
 	EE.on('will-delete-project', (projectId) => {
@@ -35,7 +28,7 @@ function addEvents() {
 	});
 
 	EE.on('deleted-project', (projectId) => {
-		deleteProject(projectId);
+		dom.removeProject(projectId);
 	});
 
 	EE.on('deleted-active-project-li', () => {
@@ -43,17 +36,17 @@ function addEvents() {
 		const firstProject = projects[0];
 		if (firstProject) {
 			const firstProjectTodos = Todo.find({ projectId: firstProject.id });
-			switchProject(firstProject, firstProjectTodos);
+			dom.switchProject(firstProject, firstProjectTodos);
 		} else {
-			clearTodosTitle();
-			clearTodoList();
+			dom.setTodosTitle('');
+			dom.clearTodoList();
 		}
 	});
 
-	EE.on('project-switch', (projectId) => {
+	EE.on('will-switch-project', (projectId) => {
 		const project = Project.find({ id: projectId })[0];
 		const todos = Todo.find({ projectId });
-		switchProject(project, todos);
+		dom.switchProject(project, todos);
 	});
 }
 

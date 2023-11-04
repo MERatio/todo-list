@@ -43,7 +43,7 @@ function addDummyInitialElements() {
 		4,
 	);
 
-	EE.emit('project-switch', defaultProject.id);
+	EE.emit('will-switch-project', defaultProject.id);
 }
 
 export default addDummyInitialElements;

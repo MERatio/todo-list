@@ -76,9 +76,9 @@ function handleProjectFormSubmit() {
 
 	switch (formOperation) {
 		case 'new':
-			return EE.emit('new-project', titleInput.value);
+			return EE.emit('will-create-project', titleInput.value);
 		case 'edit':
-			return EE.emit('edit-project', projectId, titleInput.value);
+			return EE.emit('will-update-project', projectId, titleInput.value);
 	}
 
 	delete projectForm.dataset.formOperation;
@@ -108,7 +108,7 @@ function handleSwitchProjectBtnClick(e) {
 		return;
 	}
 
-	EE.emit('project-switch', newActiveProjectId);
+	EE.emit('will-switch-project', newActiveProjectId);
 }
 
 function handleDeleteProjectBtnClick(e) {
@@ -201,7 +201,7 @@ function updateProject(updatedProject) {
 	}
 }
 
-function deleteProject(projectId) {
+function removeProject(projectId) {
 	const projectLi = projectList.querySelector(
 		`[data-project-id="${projectId}"]`,
 	);
@@ -229,8 +229,8 @@ function removeTodo(todoId) {
 	todoLi.remove();
 }
 
-function clearTodosTitle() {
-	todosProjectTitle.textContent = '';
+function setTodosTitle(todosTitle) {
+	todosProjectTitle.textContent = todosTitle;
 }
 
 function clearTodoList() {
@@ -334,6 +334,13 @@ function createTodoLi(todo) {
 	return todoLi;
 }
 
+function renderTodos(todos) {
+	for (const todo of todos) {
+		const todoLi = createTodoLi(todo);
+		todoList.append(todoLi);
+	}
+}
+
 function switchProject(project, todos) {
 	const oldActiveProjectLi = projectList.querySelector(`[data-active-project`);
 	const newActiveProjectLi = projectList.querySelector(
@@ -366,13 +373,9 @@ function switchProject(project, todos) {
 		newActiveProjectLi.querySelector('.switchProjectBtn');
 	newActiveProjectLiBtn.classList.add('cursor-default');
 
-	todosProjectTitle.textContent = project.title;
-
+	setTodosTitle(project.title);
 	clearTodoList();
-	for (const todo of todos) {
-		const todoLi = createTodoLi(todo);
-		todoList.append(todoLi);
-	}
+	renderTodos(todos);
 }
 
 export {
@@ -380,8 +383,8 @@ export {
 	addEventListeners,
 	renderProject,
 	updateProject,
-	deleteProject,
-	clearTodosTitle,
+	removeProject,
+	setTodosTitle,
 	clearTodoList,
 	switchProject,
 };

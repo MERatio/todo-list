@@ -7,7 +7,7 @@ function addInitialElements() {
 		EE.emit('project-created', project);
 	}
 	if (projects[0]) {
-		EE.emit('project-switch', projects[0].id);
+		EE.emit('will-switch-project', projects[0].id);
 	}
 }
 
