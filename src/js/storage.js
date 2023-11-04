@@ -41,7 +41,7 @@ function deleteById(key, id) {
 function deleteMany(key, conditions) {
 	let array = find(key, {});
 	array = array.filter((el) => {
-		for (const conditionKey in Object.keys(conditions)) {
+		for (const conditionKey of Object.keys(conditions)) {
 			return !(el[conditionKey] === conditions[conditionKey]);
 		}
 	});
