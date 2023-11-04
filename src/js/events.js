@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3';
-import { renderProject, switchProject } from './dom';
+import { renderProject, updateProject, switchProject } from './dom';
 import * as Project from './Project';
 import * as Todo from './Todo';
 
@@ -13,6 +13,14 @@ function addEvents() {
 
 	EE.on('project-created', (project) => {
 		renderProject(project);
+	});
+
+	EE.on('edit-project', (projectId, newTitle) => {
+		Project.findByIdAndUpdate(projectId, { title: newTitle });
+	});
+
+	EE.on('updated-project', (updatedProject) => {
+		updateProject(updatedProject);
 	});
 
 	EE.on('project-switch', (projectId) => {

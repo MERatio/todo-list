@@ -14,9 +14,19 @@ function create(title) {
 	return project;
 }
 
+function findByIdAndUpdate(id, updatedProps) {
+	const updatedProject = storage.findByIdAndUpdate(
+		'projects',
+		id,
+		updatedProps,
+	);
+	EE.emit('updated-project', updatedProject);
+	return updatedProject;
+}
+
 function deleteById(id) {
 	storage.deleteById('projects', id);
 	storage.deleteMany('todos', { projectId: id });
 }
 
-export { find, create, deleteById };
+export { find, create, findByIdAndUpdate, deleteById };

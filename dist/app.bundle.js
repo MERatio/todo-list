@@ -13366,6 +13366,19 @@ function handleBarsBtnClick() {
 	}
 }
 
+function populateForm(form, resource, resourceId) {
+	switch (resource) {
+		case 'project':
+			const titleInput = form.querySelector('#projectTitle');
+			const projectLi = projectList.querySelector(
+				`[data-project-id="${resourceId}"]`,
+			);
+			const switchProjectBtn = projectLi.querySelector('.switchProjectBtn');
+			titleInput.value = switchProjectBtn.textContent.trim();
+			break;
+	}
+}
+
 function handleOpenDialogBtnClick(e) {
 	const btn = e.currentTarget;
 	const dialog = document.getElementById(btn.dataset.dialogId);
@@ -13373,6 +13386,12 @@ function handleOpenDialogBtnClick(e) {
 	const formOperation = btn.dataset.formOperation;
 	const submitBtn = form.querySelector('button[type="submit"]');
 	form.dataset.formOperation = formOperation;
+	if (formOperation === 'edit') {
+		const resource = btn.dataset.resource;
+		const resourceId = btn.dataset[resource + 'Id'];
+		form.dataset[resource + 'Id'] = resourceId;
+		populateForm(form, resource, resourceId);
+	}
 	submitBtn.textContent = btn.dataset.submitBtnText;
 	dialog.showModal();
 }
@@ -13389,11 +13408,19 @@ function handleDialogClosed(e) {
 }
 
 function handleProjectFormSubmit() {
+	const formOperation = projectForm.dataset.formOperation;
+	const projectId = projectForm.dataset.projectId;
 	const titleInput = projectForm.querySelector('#projectTitle');
-	if (projectForm.dataset.formOperation === 'new') {
-		delete projectForm.dataset.formOperation;
-		EE.emit('new-project', titleInput.value);
+
+	switch (formOperation) {
+		case 'new':
+			return EE.emit('new-project', titleInput.value);
+		case 'edit':
+			return EE.emit('edit-project', projectId, titleInput.value);
 	}
+
+	delete projectForm.dataset.formOperation;
+	delete projectForm.dataset.projectId;
 }
 
 function addEventListeners() {
@@ -13425,6 +13452,7 @@ function handleSwitchProjectBtnClick(e) {
 function createProjectLi(project) {
 	const projectLi = document.createElement('li');
 	projectLi.classList.add(
+		'flex',
 		'border-b-2',
 		'border-solid',
 		'border-transparent',
@@ -13432,18 +13460,41 @@ function createProjectLi(project) {
 	);
 	projectLi.dataset.projectId = project.id;
 
-	const switchProjectBtn = document.createElement('button');
-	switchProjectBtn.setAttribute('type', 'button');
-	switchProjectBtn.classList.add(
-		'switchProjectBtn',
-		'w-full',
-		'text-left',
-		'sm:text-lg',
-	);
-	switchProjectBtn.textContent = sanitize_html_default()(project.title);
-	switchProjectBtn.dataset.projectId = project.id;
+	projectLi.innerHTML = `
+		<button
+			type="button"
+			class="switchProjectBtn grow text-left sm:text-lg"
+			data-project-id="${project.id}"
+		>
+			${sanitize_html_default()(project.title)}
+		</button>
+		<button
+			type="button"
+			class="editProjectBtn fill-main"
+			title="Edit project"
+			data-dialog-id="projectDialog"
+			data-submit-btn-text="Update"
+			data-form-operation="edit"
+			data-resource="project"
+			data-project-id="${project.id}"
+		>
+			<svg
+				class="h-4"
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 512 512"
+			>
+				<path
+					d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"
+				/>
+			</svg>
+		</button>
+	`;
+
+	const switchProjectBtn = projectLi.querySelector('.switchProjectBtn');
 	switchProjectBtn.addEventListener('click', handleSwitchProjectBtnClick);
-	projectLi.append(switchProjectBtn);
+
+	const editProjectBtn = projectLi.querySelector('.editProjectBtn');
+	editProjectBtn.addEventListener('click', handleOpenDialogBtnClick);
 
 	return projectLi;
 }
@@ -13451,6 +13502,17 @@ function createProjectLi(project) {
 function renderProject(project) {
 	const projectLi = createProjectLi(project);
 	projectList.append(projectLi);
+}
+
+function updateProject(updatedProject) {
+	const projectLi = projectList.querySelector(
+		`[data-project-id="${updatedProject.id}"]`,
+	);
+	const switchProjectBtn = projectLi.querySelector('.switchProjectBtn');
+	switchProjectBtn.textContent = updatedProject.title;
+	if (projectLi.dataset.hasOwnProperty('activeProject')) {
+		todosProjectTitle.textContent = updatedProject.title;
+	}
 }
 
 function removeTodo(todoId) {
@@ -13762,6 +13824,16 @@ function create(title) {
 	return project;
 }
 
+function Project_findByIdAndUpdate(id, updatedProps) {
+	const updatedProject = findByIdAndUpdate(
+		'projects',
+		id,
+		updatedProps,
+	);
+	EE.emit('updated-project', updatedProject);
+	return updatedProject;
+}
+
 function Project_deleteById(id) {
 	storage.deleteById('projects', id);
 	storage.deleteMany('todos', { projectId: id });
@@ -13820,6 +13892,14 @@ function addEvents() {
 
 	EE.on('project-created', (project) => {
 		renderProject(project);
+	});
+
+	EE.on('edit-project', (projectId, newTitle) => {
+		Project_findByIdAndUpdate(projectId, { title: newTitle });
+	});
+
+	EE.on('updated-project', (updatedProject) => {
+		updateProject(updatedProject);
 	});
 
 	EE.on('project-switch', (projectId) => {
