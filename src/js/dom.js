@@ -79,11 +79,11 @@ function handleProjectFormSubmit() {
 		case 'new':
 			return EE.emit('will-create-project', titleInput.value);
 		case 'edit':
+			delete projectForm.dataset.projectId;
 			return EE.emit('will-update-project', projectId, titleInput.value);
 	}
 
 	delete projectForm.dataset.formOperation;
-	delete projectForm.dataset.projectId;
 }
 
 function handleTodoFormSubmit() {

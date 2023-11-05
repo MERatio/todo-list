@@ -8,11 +8,11 @@ const EE = new EventEmitter();
 function addEvents() {
 	EE.on('will-create-project', (title) => {
 		const project = Project.create(title);
-		dom.switchProject(project, []);
 	});
 
 	EE.on('project-created', (project) => {
 		dom.renderProject(project);
+		dom.switchProject(project, []);
 	});
 
 	EE.on('will-update-project', (projectId, newTitle) => {
