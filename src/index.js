@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	} else {
 		addInitialElements();
 	}
+	dom.determineAddTodoDisplay();
 	dom.addFormValidations();
 	dom.addEventListeners();
 });
