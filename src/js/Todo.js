@@ -25,6 +25,7 @@ function create(projectId, title, description, dueDate, priority) {
 
 function findByIdAndUpdate(id, updatedProps) {
 	const updatedTodo = storage.findByIdAndUpdate('todos', id, updatedProps);
+	EE.emit('updated-todo', updatedTodo);
 	return updatedTodo;
 }
 

@@ -1,5 +1,5 @@
 import sanitizeHtml from 'sanitize-html';
-import formatDate from 'date-fns/format';
+import { format as formatDate, formatRFC3339 } from 'date-fns';
 import { EE } from './events';
 
 const barsBtn = document.getElementById('barsBtn');
@@ -35,6 +35,16 @@ function populateProjectForm(project) {
 	titleInput.value = project.title;
 }
 
+function populateTodoForm(todo) {
+	todoForm.querySelector('#todoTitle').value = todo.title;
+	todoForm.querySelector('#todoDescription').value = todo.description;
+	todoForm.querySelector('#todoDueDate').value = formatDate(
+		todo.dueDate,
+		'yyyy-MM-dd',
+	);
+	todoForm.querySelector('#todoPriority').value = todo.priority;
+}
+
 function handleOpenDialogBtnClick(e) {
 	const btn = e.currentTarget;
 	const dialog = document.getElementById(btn.dataset.dialogId);
@@ -46,8 +56,13 @@ function handleOpenDialogBtnClick(e) {
 		const resource = btn.dataset.resource;
 		const resourceId = btn.dataset[resource + 'Id'];
 		form.dataset[resource + 'Id'] = resourceId;
-		if (resource === 'project') {
-			EE.emit('will-populate-project-form', resourceId);
+		switch (resource) {
+			case 'project':
+				EE.emit('will-populate-project-form', resourceId);
+				break;
+			case 'todo':
+				EE.emit('will-populate-todo-form', resourceId);
+				break;
 		}
 	}
 	submitBtn.textContent = btn.dataset.submitBtnText;
@@ -85,6 +100,7 @@ function handleTodoFormSubmit() {
 	const formOperation = todoForm.dataset.formOperation;
 	const activeProjectId = projectList.querySelector('[data-active-project]')
 		.dataset.projectId;
+	const todoId = todoForm.dataset.todoId;
 	const title = todoForm.querySelector('#todoTitle').value;
 	const description = todoForm.querySelector('#todoDescription').value;
 	const dueDate = new Date(todoForm.querySelector('#todoDueDate').value);
@@ -100,6 +116,14 @@ function handleTodoFormSubmit() {
 				dueDate,
 				priority,
 			);
+		case 'edit':
+			delete todoForm.dataset.todoId;
+			return EE.emit('will-update-todo', todoId, {
+				title,
+				description,
+				dueDate,
+				priority,
+			});
 	}
 
 	delete todoForm.dataset.formOperation;
@@ -270,18 +294,28 @@ function clearTodoList() {
 	}
 }
 
-function getTodoCircleColor(priority) {
+function getTodoCircleBtnStyle(priority) {
+	let todoCircleBtnStyle = 'todoCircle absolute left-2 top-4';
 	// I can't use string concatenation because tailwindcss doesnt generate dynamic class names.
 	switch (priority) {
 		case 1:
-			return 'fill-red-600 hover:fill-red-700';
+			todoCircleBtnStyle += ' fill-red-600 hover:fill-red-700';
+			break;
 		case 2:
-			return 'fill-amber-600 hover:fill-amber-700';
+			todoCircleBtnStyle += ' fill-amber-600 hover:fill-amber-700';
+			break;
 		case 3:
-			return 'fill-blue-600 hover:fill-blue-700';
+			todoCircleBtnStyle += ' fill-blue-600 hover:fill-blue-700';
+			break;
 		case 4:
-			return 'fill-neutral-600 hover:fill-neutral-700';
+			todoCircleBtnStyle += ' fill-neutral-600 hover:fill-neutral-700';
+			break;
 	}
+	return todoCircleBtnStyle;
+}
+
+function formatTodoDueDate(dueDate) {
+	return formatDate(dueDate, 'PPPP');
 }
 
 function createTodoLi(todo) {
@@ -296,12 +330,12 @@ function createTodoLi(todo) {
 	);
 	todoLi.dataset.todoId = todo.id;
 
-	const circleFill = getTodoCircleColor(todo.priority);
+	const todoCircleBtnStyle = getTodoCircleBtnStyle(todo.priority);
 
 	todoLi.innerHTML = `
 		<button
 			type="button"
-			class="absolute left-2 top-4 ${circleFill}"
+			class="${todoCircleBtnStyle}"
 			title="Complete/uncomplete todo"
 		>
 			<svg
@@ -318,10 +352,12 @@ function createTodoLi(todo) {
 			<summary
 				class="inline-flex w-full cursor-pointer items-center border-b border-solid border-gray-200 hover:border-gray-300"
 			>
-				<p>${sanitizeHtml(todo.title)}</p>
-				<p class="ml-5 text-sm text-neutral-600">${formatDate(todo.dueDate, 'PPPP')}</p>
+				<p class="todoTitle">${sanitizeHtml(todo.title)}</p>
+				<p class="todoDueDate ml-5 text-sm text-neutral-600">${formatTodoDueDate(
+					todo.dueDate,
+				)}</p>
 			</summary>
-			<p class="pt-2 text-sm">
+			<p class="todoDescription pt-2 text-sm">
 				${sanitizeHtml(todo.description)}
 			</p>
 		</details>
@@ -331,6 +367,9 @@ function createTodoLi(todo) {
 			title="Edit todo"
 			data-dialog-id="todoDialog"
 			data-submit-btn-text="Update"
+			data-form-operation="edit"
+			data-resource="todo"
+			data-todo-id="${todo.id}"
 		>
 			<svg
 				class="h-4"
@@ -376,6 +415,18 @@ function renderTodos(todos) {
 	}
 }
 
+function updateTodo(todo) {
+	const todoLi = todoList.querySelector(`[data-todo-id="${todo.id}"]`);
+	todoLi.querySelector('.todoTitle').textContent = todo.title;
+	todoLi.querySelector('.todoDescription').textContent = todo.description;
+	todoLi.querySelector('.todoDueDate').textContent = formatTodoDueDate(
+		todo.dueDate,
+	);
+	todoLi
+		.querySelector('.todoCircle')
+		.setAttribute('class', getTodoCircleBtnStyle(todo.priority));
+}
+
 function switchProject(project, todos) {
 	const oldActiveProjectLi = projectList.querySelector(`[data-active-project`);
 	const newActiveProjectLi = projectList.querySelector(
@@ -416,6 +467,7 @@ function switchProject(project, todos) {
 export {
 	addFormValidations,
 	populateProjectForm,
+	populateTodoForm,
 	addEventListeners,
 	renderProject,
 	updateProject,
@@ -424,5 +476,6 @@ export {
 	setTodosTitle,
 	clearTodoList,
 	renderTodo,
+	updateTodo,
 	switchProject,
 };

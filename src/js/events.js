@@ -66,6 +66,19 @@ function addEvents() {
 	EE.on('todo-created', (todo) => {
 		dom.renderTodo(todo);
 	});
+
+	EE.on('will-populate-todo-form', (todoId) => {
+		const todo = Todo.find({ id: todoId })[0];
+		dom.populateTodoForm(todo);
+	});
+
+	EE.on('will-update-todo', (todoId, updatedProps) => {
+		Todo.findByIdAndUpdate(todoId, updatedProps);
+	});
+
+	EE.on('updated-todo', (updatedTodo) => {
+		dom.updateTodo(updatedTodo);
+	});
 }
 
 export { EE, addEvents };
