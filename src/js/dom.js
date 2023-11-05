@@ -3,13 +3,13 @@ import formatDate from 'date-fns/format';
 import { EE } from './events';
 
 const barsBtn = document.getElementById('barsBtn');
+const projectForm = document.getElementById('projectForm');
 const todoForm = document.getElementById('todoForm');
 const projectSection = document.getElementById('projectSection');
 const openDialogBtns = document.querySelectorAll('.openDialogBtn');
 const closeDialogBtns = document.querySelectorAll('.closeDialogBtn');
 const dialogs = document.querySelectorAll('.dialog');
 const projectList = document.getElementById('projectList');
-const projectForm = document.getElementById('projectForm');
 const todosProjectTitle = document.getElementById('todosProjectTitle');
 const todoList = document.getElementById('todoList');
 
