@@ -30,17 +30,9 @@ function handleBarsBtnClick() {
 	}
 }
 
-function populateForm(form, resource, resourceId) {
-	switch (resource) {
-		case 'project':
-			const titleInput = form.querySelector('#projectTitle');
-			const projectLi = projectList.querySelector(
-				`[data-project-id="${resourceId}"]`,
-			);
-			const switchProjectBtn = projectLi.querySelector('.switchProjectBtn');
-			titleInput.value = switchProjectBtn.textContent.trim();
-			break;
-	}
+function populateProjectForm(project) {
+	const titleInput = projectForm.querySelector('#projectTitle');
+	titleInput.value = project.title;
 }
 
 function handleOpenDialogBtnClick(e) {
@@ -54,7 +46,9 @@ function handleOpenDialogBtnClick(e) {
 		const resource = btn.dataset.resource;
 		const resourceId = btn.dataset[resource + 'Id'];
 		form.dataset[resource + 'Id'] = resourceId;
-		populateForm(form, resource, resourceId);
+		if (resource === 'project') {
+			EE.emit('will-populate-project-form', resourceId);
+		}
 	}
 	submitBtn.textContent = btn.dataset.submitBtnText;
 	dialog.showModal();
@@ -421,6 +415,7 @@ function switchProject(project, todos) {
 
 export {
 	addFormValidations,
+	populateProjectForm,
 	addEventListeners,
 	renderProject,
 	updateProject,

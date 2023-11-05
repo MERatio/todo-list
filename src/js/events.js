@@ -16,6 +16,11 @@ function addEvents() {
 		dom.determineAddTodoDisplay();
 	});
 
+	EE.on('will-populate-project-form', (projectId) => {
+		const project = Project.find({ id: projectId })[0];
+		dom.populateProjectForm(project);
+	});
+
 	EE.on('will-update-project', (projectId, newTitle) => {
 		Project.findByIdAndUpdate(projectId, { title: newTitle });
 	});
