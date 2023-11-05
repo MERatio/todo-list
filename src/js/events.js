@@ -13,6 +13,7 @@ function addEvents() {
 	EE.on('project-created', (project) => {
 		dom.renderProject(project);
 		dom.switchProject(project, []);
+		dom.determineAddTodoDisplay();
 	});
 
 	EE.on('will-update-project', (projectId, newTitle) => {
@@ -29,6 +30,7 @@ function addEvents() {
 
 	EE.on('deleted-project', (projectId) => {
 		dom.removeProject(projectId);
+		dom.determineAddTodoDisplay();
 	});
 
 	EE.on('deleted-active-project-li', () => {

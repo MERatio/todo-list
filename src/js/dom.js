@@ -12,6 +12,7 @@ const dialogs = document.querySelectorAll('.dialog');
 const projectList = document.getElementById('projectList');
 const todosProjectTitle = document.getElementById('todosProjectTitle');
 const todoList = document.getElementById('todoList');
+const addTodoBtn = document.getElementById('addTodoBtn');
 
 function addFormValidations() {
 	const todoForm = document.getElementById('todoForm');
@@ -227,6 +228,16 @@ function updateProject(updatedProject) {
 	}
 }
 
+function determineAddTodoDisplay() {
+	if (projectList.children.length === 0) {
+		addTodoBtn.classList.add('hidden');
+	} else {
+		if (addTodoBtn.classList.contains('hidden')) {
+			addTodoBtn.classList.remove('hidden');
+		}
+	}
+}
+
 function removeProject(projectId) {
 	const projectLi = projectList.querySelector(
 		`[data-project-id="${projectId}"]`,
@@ -414,6 +425,7 @@ export {
 	renderProject,
 	updateProject,
 	removeProject,
+	determineAddTodoDisplay,
 	setTodosTitle,
 	clearTodoList,
 	renderTodo,
