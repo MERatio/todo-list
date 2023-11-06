@@ -283,6 +283,11 @@ function removeProject(projectId) {
 	}
 }
 
+function handleTodoCircleBtnClick(e) {
+	const todoId = e.currentTarget.dataset.todoId;
+	EE.emit('will-complete/uncomplete-todo', todoId);
+}
+
 function handleDeleteTodoBtn(e) {
 	const todoId = e.currentTarget.dataset.todoId;
 	EE.emit('will-delete-todo', todoId);
@@ -290,8 +295,10 @@ function handleDeleteTodoBtn(e) {
 
 function removeTodo(todoId) {
 	const todoLi = todoList.querySelector(`[data-todo-id="${todoId}"]`);
+	const todoCircleBtn = todoLi.querySelector('.todoCircleBtn');
 	const editTodoBtn = todoLi.querySelector('.editTodoBtn');
 	const deleteTodoBtn = todoLi.querySelector('.deleteTodoBtn');
+	todoCircleBtn.removeEventListener('click', handleTodoCircleBtnClick);
 	editTodoBtn.removeEventListener('click', handleOpenDialogBtnClick);
 	deleteTodoBtn.removeEventListener('click', handleDeleteTodoBtn);
 	todoLi.remove();
@@ -312,7 +319,7 @@ function getTodoLiCSSClass(complete) {
 }
 
 function getTodoCircleBtnStyle(priority) {
-	let todoCircleBtnStyle = 'todoCircle absolute left-2 top-4';
+	let todoCircleBtnStyle = 'todoCircleBtn absolute left-2 top-4';
 	// I can't use string concatenation because tailwindcss doesnt generate dynamic class names.
 	switch (priority) {
 		case 1:
@@ -375,7 +382,6 @@ function createTodoLi(todo) {
 	const todoLi = document.createElement('li');
 	const todoLiCSSClass = getTodoLiCSSClass(todo.complete);
 	todoLi.setAttribute('class', todoLiCSSClass);
-
 	todoLi.dataset.todoId = todo.id;
 
 	const todoCircleBtnStyle = getTodoCircleBtnStyle(todo.priority);
@@ -387,6 +393,7 @@ function createTodoLi(todo) {
 			type="button"
 			class="${todoCircleBtnStyle}"
 			title="Complete/uncomplete todo"
+			data-todo-id="${todo.id}"
 		>
 			${todoCircleBtnIcon}
 		</button>
@@ -441,6 +448,9 @@ function createTodoLi(todo) {
 		</button>
 	`;
 
+	const todoCircleBtn = todoLi.querySelector('.todoCircleBtn');
+	todoCircleBtn.addEventListener('click', handleTodoCircleBtnClick);
+
 	const editTodoBtn = todoLi.querySelector('.editTodoBtn');
 	editTodoBtn.addEventListener('click', handleOpenDialogBtnClick);
 
@@ -462,17 +472,9 @@ function renderTodos(todos) {
 }
 
 function updateTodo(todo) {
-	const todoLi = todoList.querySelector(`[data-todo-id="${todo.id}"]`);
-	todoLi.querySelector('.todoTitle').textContent = sanitizeHtml(todo.title);
-	todoLi.querySelector('.todoDescription').textContent = sanitizeHtml(
-		todo.description,
-	);
-	todoLi.querySelector('.todoDueDate').textContent = formatTodoDueDate(
-		todo.dueDate,
-	);
-	todoLi
-		.querySelector('.todoCircle')
-		.setAttribute('class', getTodoCircleBtnStyle(todo.priority));
+	const oldTodoLi = todoList.querySelector(`[data-todo-id="${todo.id}"]`);
+	const newTodoLi = createTodoLi(todo);
+	todoList.replaceChild(newTodoLi, oldTodoLi);
 }
 
 function switchProject(project, todos) {

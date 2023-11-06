@@ -64,6 +64,12 @@ function addEvents() {
 		dom.renderTodo(todo);
 	});
 
+	EE.on('will-complete/uncomplete-todo', (todoId) => {
+		const todo = Todo.find({ id: todoId })[0];
+		const updatedTodoInfo = { ...todo, complete: !todo.complete };
+		Todo.findByIdAndUpdate(todoId, updatedTodoInfo);
+	});
+
 	EE.on('will-populate-todo-form', (todoId) => {
 		const todo = Todo.find({ id: todoId })[0];
 		dom.populateTodoForm(todo);
