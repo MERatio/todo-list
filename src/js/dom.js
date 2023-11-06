@@ -303,6 +303,14 @@ function clearTodoList() {
 	}
 }
 
+function getTodoLiCSSClass(complete) {
+	let todoLiCSSClass = 'relative py-2 pl-8 pr-14 shadow sm:py-3';
+	if (complete) {
+		todoLiCSSClass += ' opacity-80';
+	}
+	return todoLiCSSClass;
+}
+
 function getTodoCircleBtnStyle(priority) {
 	let todoCircleBtnStyle = 'todoCircle absolute left-2 top-4';
 	// I can't use string concatenation because tailwindcss doesnt generate dynamic class names.
@@ -323,30 +331,21 @@ function getTodoCircleBtnStyle(priority) {
 	return todoCircleBtnStyle;
 }
 
-function formatTodoDueDate(dueDate) {
-	return formatDate(dueDate, 'PPPP');
-}
-
-function createTodoLi(todo) {
-	const todoLi = document.createElement('li');
-	todoLi.classList.add(
-		'relative',
-		'py-2',
-		'pl-8',
-		'pr-14',
-		'shadow',
-		'sm:py-3',
-	);
-	todoLi.dataset.todoId = todo.id;
-
-	const todoCircleBtnStyle = getTodoCircleBtnStyle(todo.priority);
-
-	todoLi.innerHTML = `
-		<button
-			type="button"
-			class="${todoCircleBtnStyle}"
-			title="Complete/uncomplete todo"
-		>
+function getTodoCircleBtnIcon(complete) {
+	if (complete) {
+		return `
+			<svg 
+				class="h-4"
+				xmlns="http://www.w3.org/2000/svg" 
+				viewBox="0 0 512 512"
+			>
+				<path 
+					d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"
+				/>
+			</svg>
+		`;
+	} else {
+		return `
 			<svg
 				class="h-4"
 				xmlns="http://www.w3.org/2000/svg"
@@ -356,12 +355,46 @@ function createTodoLi(todo) {
 					d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
 				/>
 			</svg>
+	`;
+	}
+}
+
+function getTodoTitleCSSClass(complete) {
+	let todoTitleCSSClass = 'todoTitle';
+	if (complete) {
+		todoTitleCSSClass += ' line-through';
+	}
+	return todoTitleCSSClass;
+}
+
+function formatTodoDueDate(dueDate) {
+	return formatDate(dueDate, 'PPPP');
+}
+
+function createTodoLi(todo) {
+	const todoLi = document.createElement('li');
+	const todoLiCSSClass = getTodoLiCSSClass(todo.complete);
+	todoLi.setAttribute('class', todoLiCSSClass);
+
+	todoLi.dataset.todoId = todo.id;
+
+	const todoCircleBtnStyle = getTodoCircleBtnStyle(todo.priority);
+	const todoCircleBtnIcon = getTodoCircleBtnIcon(todo.complete);
+	const todoTitleCSSClass = getTodoTitleCSSClass(todo.complete);
+
+	todoLi.innerHTML = `
+		<button
+			type="button"
+			class="${todoCircleBtnStyle}"
+			title="Complete/uncomplete todo"
+		>
+			${todoCircleBtnIcon}
 		</button>
 		<details class="w-full">
 			<summary
 				class="inline-flex w-full cursor-pointer items-center border-b border-solid border-gray-200 hover:border-gray-300"
 			>
-				<p class="todoTitle">${sanitizeHtml(todo.title)}</p>
+				<p class="${todoTitleCSSClass}">${sanitizeHtml(todo.title)}</p>
 				<p class="todoDueDate ml-5 text-sm text-neutral-600">${formatTodoDueDate(
 					todo.dueDate,
 				)}</p>

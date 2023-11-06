@@ -17,6 +17,7 @@ function addDummyInitialElements() {
 		description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
 		dueDate: tommorow,
 		priority: 1,
+		complete: true,
 	});
 
 	Todo.create({
@@ -25,6 +26,7 @@ function addDummyInitialElements() {
 		description: 'Lorem ipsum, dolor sit, amet consectetur adipisicing elit.',
 		dueDate: tommorow,
 		priority: 2,
+		complete: false,
 	});
 
 	Todo.create({
@@ -33,6 +35,7 @@ function addDummyInitialElements() {
 		description: 'Lorem ipsum, dolor sit.',
 		dueDate: tommorow,
 		priority: 3,
+		complete: false,
 	});
 
 	Todo.create({
@@ -41,6 +44,7 @@ function addDummyInitialElements() {
 		description: 'Lorem ipsum dolor sit amet consectetur adipisicing, elit.',
 		dueDate: tommorow,
 		priority: 4,
+		complete: true,
 	});
 
 	EE.emit('will-switch-project', defaultProject.id);
