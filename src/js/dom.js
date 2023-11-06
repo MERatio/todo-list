@@ -235,14 +235,19 @@ function renderProject(project) {
 	projectList.append(projectLi);
 }
 
+function setTodosTitle(todosTitle) {
+	todosProjectTitle.textContent = todosTitle;
+}
+
 function updateProject(updatedProject) {
 	const projectLi = projectList.querySelector(
 		`[data-project-id="${updatedProject.id}"]`,
 	);
 	const switchProjectBtn = projectLi.querySelector('.switchProjectBtn');
-	switchProjectBtn.textContent = updatedProject.title;
+	const sanitizedUpdateProjectTitle = sanitizeHtml(updatedProject.title);
+	switchProjectBtn.textContent = sanitizedUpdateProjectTitle;
 	if (projectLi.dataset.hasOwnProperty('activeProject')) {
-		todosProjectTitle.textContent = updatedProject.title;
+		setTodosTitle(sanitizedUpdateProjectTitle);
 	}
 }
 
@@ -282,10 +287,6 @@ function removeTodo(todoId) {
 	const editTodoBtn = todoLi.querySelector('.editTodoBtn');
 	editTodoBtn.removeEventListener('click', handleOpenDialogBtnClick);
 	todoLi.remove();
-}
-
-function setTodosTitle(todosTitle) {
-	todosProjectTitle.textContent = todosTitle;
 }
 
 function clearTodoList() {
@@ -417,8 +418,10 @@ function renderTodos(todos) {
 
 function updateTodo(todo) {
 	const todoLi = todoList.querySelector(`[data-todo-id="${todo.id}"]`);
-	todoLi.querySelector('.todoTitle').textContent = todo.title;
-	todoLi.querySelector('.todoDescription').textContent = todo.description;
+	todoLi.querySelector('.todoTitle').textContent = sanitizeHtml(todo.title);
+	todoLi.querySelector('.todoDescription').textContent = sanitizeHtml(
+		todo.description,
+	);
 	todoLi.querySelector('.todoDueDate').textContent = formatTodoDueDate(
 		todo.dueDate,
 	);
@@ -459,7 +462,7 @@ function switchProject(project, todos) {
 		newActiveProjectLi.querySelector('.switchProjectBtn');
 	newActiveProjectLiBtn.classList.add('cursor-default');
 
-	setTodosTitle(project.title);
+	setTodosTitle(sanitizeHtml(project.title));
 	clearTodoList();
 	renderTodos(todos);
 }
