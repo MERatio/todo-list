@@ -283,10 +283,17 @@ function removeProject(projectId) {
 	}
 }
 
+function handleDeleteTodoBtn(e) {
+	const todoId = e.currentTarget.dataset.todoId;
+	EE.emit('will-delete-todo', todoId);
+}
+
 function removeTodo(todoId) {
 	const todoLi = todoList.querySelector(`[data-todo-id="${todoId}"]`);
 	const editTodoBtn = todoLi.querySelector('.editTodoBtn');
+	const deleteTodoBtn = todoLi.querySelector('.deleteTodoBtn');
 	editTodoBtn.removeEventListener('click', handleOpenDialogBtnClick);
+	deleteTodoBtn.removeEventListener('click', handleDeleteTodoBtn);
 	todoLi.remove();
 }
 
@@ -385,8 +392,9 @@ function createTodoLi(todo) {
 		</button>
 		<button
 			type="button"
-			class="fill-main absolute right-3 top-4"
+			class="deleteTodoBtn fill-main absolute right-3 top-4"
 			title="Delete todo"
+			data-todo-id="${todo.id}"
 		>
 			<svg
 				class="h-4"
@@ -402,6 +410,9 @@ function createTodoLi(todo) {
 
 	const editTodoBtn = todoLi.querySelector('.editTodoBtn');
 	editTodoBtn.addEventListener('click', handleOpenDialogBtnClick);
+
+	const deleteTodoBtn = todoLi.querySelector('.deleteTodoBtn');
+	deleteTodoBtn.addEventListener('click', handleDeleteTodoBtn);
 
 	return todoLi;
 }
@@ -476,6 +487,7 @@ export {
 	renderProject,
 	updateProject,
 	removeProject,
+	removeTodo,
 	determineAddTodoDisplay,
 	setTodosTitle,
 	clearTodoList,

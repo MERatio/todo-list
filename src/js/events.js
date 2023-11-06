@@ -76,6 +76,14 @@ function addEvents() {
 	EE.on('updated-todo', (updatedTodo) => {
 		dom.updateTodo(updatedTodo);
 	});
+
+	EE.on('will-delete-todo', (todoId) => {
+		Todo.deleteById(todoId);
+	});
+
+	EE.on('deleted-todo', (todoId) => {
+		dom.removeTodo(todoId);
+	});
 }
 
 export { EE, addEvents };

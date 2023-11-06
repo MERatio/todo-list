@@ -27,6 +27,7 @@ function findByIdAndUpdate(id, updatedTodoInfo) {
 
 function deleteById(id) {
 	storage.deleteById('todos', id);
+	EE.emit('deleted-todo', id);
 }
 
 export { find, create, findByIdAndUpdate, deleteById };
