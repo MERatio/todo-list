@@ -19,15 +19,19 @@ function create(todoInfo) {
 	return todo;
 }
 
-function findByIdAndUpdate(id, updatedTodoInfo) {
-	const updatedTodo = storage.findByIdAndUpdate('todos', id, updatedTodoInfo);
+function findByIdAndUpdate(todoId, updatedTodoInfo) {
+	const updatedTodo = storage.findByIdAndUpdate(
+		'todos',
+		todoId,
+		updatedTodoInfo,
+	);
 	EE.emit('updated-todo', updatedTodo);
 	return updatedTodo;
 }
 
-function deleteById(id) {
-	storage.deleteById('todos', id);
-	EE.emit('deleted-todo', id);
+function deleteById(todoId) {
+	storage.deleteById('todos', todoId);
+	EE.emit('deleted-todo', todoId);
 }
 
 export { find, create, findByIdAndUpdate, deleteById };

@@ -14,20 +14,20 @@ function create(projectInfo) {
 	return project;
 }
 
-function findByIdAndUpdate(id, updatedProjectInfo) {
+function findByIdAndUpdate(projectId, updatedProjectInfo) {
 	const updatedProject = storage.findByIdAndUpdate(
 		'projects',
-		id,
+		projectId,
 		updatedProjectInfo,
 	);
 	EE.emit('updated-project', updatedProject);
 	return updatedProject;
 }
 
-function deleteById(id) {
-	storage.deleteById('projects', id);
-	storage.deleteMany('todos', { projectId: id });
-	EE.emit('deleted-project', id);
+function deleteById(projectId) {
+	storage.deleteById('projects', projectId);
+	storage.deleteMany('todos', { projectId });
+	EE.emit('deleted-project', projectId);
 }
 
 export { find, create, findByIdAndUpdate, deleteById };
