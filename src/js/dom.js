@@ -220,12 +220,11 @@ function createProjectLi(project) {
 	`;
 
 	const switchProjectBtn = projectLi.querySelector('.switchProjectBtn');
-	switchProjectBtn.addEventListener('click', handleSwitchProjectBtnClick);
-
 	const editProjectBtn = projectLi.querySelector('.editProjectBtn');
-	editProjectBtn.addEventListener('click', handleOpenDialogBtnClick);
-
 	const deleteProjectBtn = projectLi.querySelector('.deleteProjectBtn');
+
+	switchProjectBtn.addEventListener('click', handleSwitchProjectBtnClick);
+	editProjectBtn.addEventListener('click', handleOpenDialogBtnClick);
 	deleteProjectBtn.addEventListener('click', handleDeleteProjectBtnClick);
 
 	return projectLi;
@@ -318,24 +317,24 @@ function getTodoLiCSSClass(complete) {
 	return todoLiCSSClass;
 }
 
-function getTodoCircleBtnStyle(priority) {
-	let todoCircleBtnStyle = 'todoCircleBtn absolute left-2 top-4';
+function getTodoCircleBtnCSSClass(priority) {
+	let todoCircleBtnCSSClass = 'todoCircleBtn absolute left-2 top-4';
 	// I can't use string concatenation because tailwindcss doesnt generate dynamic class names.
 	switch (priority) {
 		case 1:
-			todoCircleBtnStyle += ' fill-red-600 hover:fill-red-700';
+			todoCircleBtnCSSClass += ' fill-red-600 hover:fill-red-700';
 			break;
 		case 2:
-			todoCircleBtnStyle += ' fill-amber-600 hover:fill-amber-700';
+			todoCircleBtnCSSClass += ' fill-amber-600 hover:fill-amber-700';
 			break;
 		case 3:
-			todoCircleBtnStyle += ' fill-blue-600 hover:fill-blue-700';
+			todoCircleBtnCSSClass += ' fill-blue-600 hover:fill-blue-700';
 			break;
 		case 4:
-			todoCircleBtnStyle += ' fill-neutral-600 hover:fill-neutral-700';
+			todoCircleBtnCSSClass += ' fill-neutral-600 hover:fill-neutral-700';
 			break;
 	}
-	return todoCircleBtnStyle;
+	return todoCircleBtnCSSClass;
 }
 
 function getTodoCircleBtnIcon(complete) {
@@ -384,14 +383,14 @@ function createTodoLi(todo) {
 	todoLi.setAttribute('class', todoLiCSSClass);
 	todoLi.dataset.todoId = todo.id;
 
-	const todoCircleBtnStyle = getTodoCircleBtnStyle(todo.priority);
+	const todoCircleBtnCSSClass = getTodoCircleBtnCSSClass(todo.priority);
 	const todoCircleBtnIcon = getTodoCircleBtnIcon(todo.complete);
 	const todoTitleCSSClass = getTodoTitleCSSClass(todo.complete);
 
 	todoLi.innerHTML = `
 		<button
 			type="button"
-			class="${todoCircleBtnStyle}"
+			class="${todoCircleBtnCSSClass}"
 			title="Complete/uncomplete todo"
 			data-todo-id="${todo.id}"
 		>
@@ -477,27 +476,20 @@ function updateTodo(todo) {
 	todoList.replaceChild(newTodoLi, oldTodoLi);
 }
 
-function switchProject(project, todos) {
-	const oldActiveProjectLi = projectList.querySelector(`[data-active-project`);
-	const newActiveProjectLi = projectList.querySelector(
-		`[data-project-id="${project.id}"]`,
+function removeOldActiveProjectLiStyle(oldActiveProjectLi) {
+	oldActiveProjectLi.classList.remove(
+		'font-medium',
+		'text-red-600',
+		'border-red-600',
+		'cursor-default',
 	);
+	oldActiveProjectLi.classList.add('border-transparent');
+	const oldActiveProjectLiBtn =
+		oldActiveProjectLi.querySelector('.switchProjectBtn');
+	oldActiveProjectLiBtn.classList.remove('cursor-default');
+}
 
-	if (oldActiveProjectLi) {
-		delete oldActiveProjectLi.dataset.activeProject;
-		oldActiveProjectLi.classList.remove(
-			'font-medium',
-			'text-red-600',
-			'border-red-600',
-			'cursor-default',
-		);
-		oldActiveProjectLi.classList.add('border-transparent');
-		const oldActiveProjectLiBtn =
-			oldActiveProjectLi.querySelector('.switchProjectBtn');
-		oldActiveProjectLiBtn.classList.remove('cursor-default');
-	}
-
-	newActiveProjectLi.dataset.activeProject = '';
+function addActiveProjectLiStyle(newActiveProjectLi) {
 	newActiveProjectLi.classList.add(
 		'font-medium',
 		'text-red-600',
@@ -508,7 +500,19 @@ function switchProject(project, todos) {
 	const newActiveProjectLiBtn =
 		newActiveProjectLi.querySelector('.switchProjectBtn');
 	newActiveProjectLiBtn.classList.add('cursor-default');
+}
 
+function switchProject(project, todos) {
+	const oldActiveProjectLi = projectList.querySelector(`[data-active-project`);
+	const newActiveProjectLi = projectList.querySelector(
+		`[data-project-id="${project.id}"]`,
+	);
+	if (oldActiveProjectLi) {
+		removeOldActiveProjectLiStyle(oldActiveProjectLi);
+		delete oldActiveProjectLi.dataset.activeProject;
+	}
+	addActiveProjectLiStyle(newActiveProjectLi);
+	newActiveProjectLi.dataset.activeProject = '';
 	setTodosTitle(sanitizeHtml(project.title));
 	clearTodoList();
 	renderTodos(todos);
