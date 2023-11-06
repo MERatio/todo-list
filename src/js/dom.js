@@ -235,20 +235,49 @@ function renderProject(project) {
 	projectList.append(projectLi);
 }
 
+function removeOldActiveProjectLiStyle(oldActiveProjectLi) {
+	oldActiveProjectLi.classList.remove(
+		'font-medium',
+		'text-red-600',
+		'border-red-600',
+		'cursor-default',
+	);
+	oldActiveProjectLi.classList.add('border-transparent');
+	const oldActiveProjectLiBtn =
+		oldActiveProjectLi.querySelector('.switchProjectBtn');
+	oldActiveProjectLiBtn.classList.remove('cursor-default');
+}
+
+function addActiveProjectLiStyle(newActiveProjectLi) {
+	newActiveProjectLi.classList.add(
+		'font-medium',
+		'text-red-600',
+		'border-red-600',
+		'cursor-default',
+	);
+	newActiveProjectLi.classList.remove('border-transparent');
+	const newActiveProjectLiBtn =
+		newActiveProjectLi.querySelector('.switchProjectBtn');
+	newActiveProjectLiBtn.classList.add('cursor-default');
+}
+
 function setTodosTitle(todosTitle) {
 	todosProjectTitle.textContent = todosTitle;
 }
 
 function updateProject(updatedProject) {
-	const projectLi = projectList.querySelector(
+	const oldProjectLi = projectList.querySelector(
 		`[data-project-id="${updatedProject.id}"]`,
 	);
-	const switchProjectBtn = projectLi.querySelector('.switchProjectBtn');
-	const sanitizedUpdateProjectTitle = sanitizeHtml(updatedProject.title);
-	switchProjectBtn.textContent = sanitizedUpdateProjectTitle;
-	if (projectLi.dataset.hasOwnProperty('activeProject')) {
-		setTodosTitle(sanitizedUpdateProjectTitle);
+	const isProjectLiActive =
+		oldProjectLi.dataset.hasOwnProperty('activeProject');
+	const newProjectLi = createProjectLi(updatedProject);
+	if (isProjectLiActive) {
+		addActiveProjectLiStyle(newProjectLi);
+		newProjectLi.dataset.activeProject = '';
+		setTodosTitle(sanitizeHtml(updatedProject.title));
 	}
+	projectList.replaceChild(newProjectLi, oldProjectLi);
 }
 
 function determineAddTodoDisplay() {
@@ -474,32 +503,6 @@ function updateTodo(todo) {
 	const oldTodoLi = todoList.querySelector(`[data-todo-id="${todo.id}"]`);
 	const newTodoLi = createTodoLi(todo);
 	todoList.replaceChild(newTodoLi, oldTodoLi);
-}
-
-function removeOldActiveProjectLiStyle(oldActiveProjectLi) {
-	oldActiveProjectLi.classList.remove(
-		'font-medium',
-		'text-red-600',
-		'border-red-600',
-		'cursor-default',
-	);
-	oldActiveProjectLi.classList.add('border-transparent');
-	const oldActiveProjectLiBtn =
-		oldActiveProjectLi.querySelector('.switchProjectBtn');
-	oldActiveProjectLiBtn.classList.remove('cursor-default');
-}
-
-function addActiveProjectLiStyle(newActiveProjectLi) {
-	newActiveProjectLi.classList.add(
-		'font-medium',
-		'text-red-600',
-		'border-red-600',
-		'cursor-default',
-	);
-	newActiveProjectLi.classList.remove('border-transparent');
-	const newActiveProjectLiBtn =
-		newActiveProjectLi.querySelector('.switchProjectBtn');
-	newActiveProjectLiBtn.classList.add('cursor-default');
 }
 
 function switchProject(project, todos) {
