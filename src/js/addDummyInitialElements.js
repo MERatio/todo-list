@@ -4,44 +4,44 @@ import { EE } from './events';
 
 function addDummyInitialElements() {
 	// Projects
-	const defaultProject = Project.create('Default');
-	const workoutProject = Project.create('Workout');
+	const defaultProject = Project.create({ title: 'Default' });
+	const workoutProject = Project.create({ title: 'Workout' });
 
 	const tommorow = new Date();
 	tommorow.setDate(tommorow.getDate() + 1);
 
 	// Todos
-	Todo.create(
-		defaultProject.id,
-		'Make bed',
-		'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-		tommorow,
-		1,
-	);
+	Todo.create({
+		projectId: defaultProject.id,
+		title: 'Make bed',
+		description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+		dueDate: tommorow,
+		priority: 1,
+	});
 
-	Todo.create(
-		defaultProject.id,
-		'Eat',
-		'Lorem ipsum, dolor sit, amet consectetur adipisicing elit.',
-		tommorow,
-		2,
-	);
+	Todo.create({
+		projectId: defaultProject.id,
+		title: 'Eat',
+		description: 'Lorem ipsum, dolor sit, amet consectetur adipisicing elit.',
+		dueDate: tommorow,
+		priority: 2,
+	});
 
-	Todo.create(
-		workoutProject.id,
-		'Squat',
-		'Lorem ipsum, dolor sit.',
-		tommorow,
-		3,
-	);
+	Todo.create({
+		projectId: workoutProject.id,
+		title: 'Squat',
+		description: 'Lorem ipsum, dolor sit.',
+		dueDate: tommorow,
+		priority: 3,
+	});
 
-	Todo.create(
-		workoutProject.id,
-		'Pull-up',
-		'Lorem ipsum dolor sit amet consectetur adipisicing, elit.',
-		tommorow,
-		4,
-	);
+	Todo.create({
+		projectId: workoutProject.id,
+		title: 'Pull-up',
+		description: 'Lorem ipsum dolor sit amet consectetur adipisicing, elit.',
+		dueDate: tommorow,
+		priority: 4,
+	});
 
 	EE.emit('will-switch-project', defaultProject.id);
 }

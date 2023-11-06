@@ -7,18 +7,18 @@ function find(filter) {
 	return projects;
 }
 
-function create(title) {
-	const project = { id: uuidv4(), title };
+function create(projectInfo) {
+	const project = { id: uuidv4(), ...projectInfo };
 	storage.add('projects', project);
 	EE.emit('project-created', project);
 	return project;
 }
 
-function findByIdAndUpdate(id, updatedProps) {
+function findByIdAndUpdate(id, updatedProjectInfo) {
 	const updatedProject = storage.findByIdAndUpdate(
 		'projects',
 		id,
-		updatedProps,
+		updatedProjectInfo,
 	);
 	EE.emit('updated-project', updatedProject);
 	return updatedProject;

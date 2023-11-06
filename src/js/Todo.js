@@ -9,22 +9,18 @@ function find(filter) {
 	return todos;
 }
 
-function create(projectId, title, description, dueDate, priority) {
+function create(todoInfo) {
 	const todo = {
 		id: uuidv4(),
-		projectId,
-		title,
-		description,
-		dueDate,
-		priority,
+		...todoInfo,
 	};
 	storage.add('todos', todo);
 	EE.emit('todo-created', todo);
 	return todo;
 }
 
-function findByIdAndUpdate(id, updatedProps) {
-	const updatedTodo = storage.findByIdAndUpdate('todos', id, updatedProps);
+function findByIdAndUpdate(id, updatedTodoInfo) {
+	const updatedTodo = storage.findByIdAndUpdate('todos', id, updatedTodoInfo);
 	EE.emit('updated-todo', updatedTodo);
 	return updatedTodo;
 }

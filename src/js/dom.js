@@ -87,10 +87,12 @@ function handleProjectFormSubmit() {
 
 	switch (formOperation) {
 		case 'new':
-			return EE.emit('will-create-project', titleInput.value);
+			return EE.emit('will-create-project', { title: titleInput.value });
 		case 'edit':
 			delete projectForm.dataset.projectId;
-			return EE.emit('will-update-project', projectId, titleInput.value);
+			return EE.emit('will-update-project', projectId, {
+				title: titleInput.value,
+			});
 	}
 
 	delete projectForm.dataset.formOperation;
@@ -108,14 +110,13 @@ function handleTodoFormSubmit() {
 
 	switch (formOperation) {
 		case 'new':
-			return EE.emit(
-				'will-create-todo',
-				activeProjectId,
+			return EE.emit('will-create-todo', {
+				projectId: activeProjectId,
 				title,
 				description,
 				dueDate,
 				priority,
-			);
+			});
 		case 'edit':
 			delete todoForm.dataset.todoId;
 			return EE.emit('will-update-todo', todoId, {

@@ -23,10 +23,10 @@ function add(key, value) {
 	localStorage.setItem(key, JSON.stringify(array));
 }
 
-function findByIdAndUpdate(key, id, updatedProps) {
+function findByIdAndUpdate(key, id, updatedInfo) {
 	let array = find(key, {});
 	const value = array.find((el) => el.id === id);
-	const updatedValue = Object.assign(value, updatedProps);
+	const updatedValue = Object.assign(value, updatedInfo);
 	array = array.map((el) => (el.id === id ? updatedValue : el));
 	localStorage.setItem(key, JSON.stringify(array));
 	return updatedValue;

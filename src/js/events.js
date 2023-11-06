@@ -21,8 +21,8 @@ function addEvents() {
 		dom.populateProjectForm(project);
 	});
 
-	EE.on('will-update-project', (projectId, newTitle) => {
-		Project.findByIdAndUpdate(projectId, { title: newTitle });
+	EE.on('will-update-project', (projectId, updatedProjectInfo) => {
+		Project.findByIdAndUpdate(projectId, updatedProjectInfo);
 	});
 
 	EE.on('updated-project', (updatedProject) => {
@@ -56,12 +56,9 @@ function addEvents() {
 		dom.switchProject(project, todos);
 	});
 
-	EE.on(
-		'will-create-todo',
-		(projectId, title, description, dueDate, priority) => {
-			Todo.create(projectId, title, description, dueDate, priority);
-		},
-	);
+	EE.on('will-create-todo', (todoInfo) => {
+		Todo.create(todoInfo);
+	});
 
 	EE.on('todo-created', (todo) => {
 		dom.renderTodo(todo);
@@ -72,8 +69,8 @@ function addEvents() {
 		dom.populateTodoForm(todo);
 	});
 
-	EE.on('will-update-todo', (todoId, updatedProps) => {
-		Todo.findByIdAndUpdate(todoId, updatedProps);
+	EE.on('will-update-todo', (todoId, updatedTodoInfo) => {
+		Todo.findByIdAndUpdate(todoId, updatedTodoInfo);
 	});
 
 	EE.on('updated-todo', (updatedTodo) => {
