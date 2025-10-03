@@ -1,0 +1,154 @@
+:root {
+  --system-ui: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --main-color: #e74c3c;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif, var(--system-ui);
+}
+
+button {
+  font-size: 100%;
+  font-family: inherit;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-header {
+  padding: 10px;
+  background-color: var(--main-color);
+  text-align: center;
+}
+
+.main-header h1 {
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.main-header h1 svg {
+  width: 38px;
+  height: 38px;
+  fill: #fff;
+}
+
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 1fr 30%;
+}
+
+.todos-section {
+  padding: 8px;
+}
+
+.todos-section .h2,
+.projects-section .h2 {
+  text-align: center;
+}
+
+.projects-section {
+  padding: 8px;
+  background-color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: auto;
+  position: relative;
+}
+
+.project-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: auto;
+}
+
+.project-list-item {
+  padding: 0 15%;
+}
+
+.project-btn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.project-btn:hover,
+.project-btn.active {
+  color: var(--main-color);
+  border-bottom: 2px solid var(--main-color);
+}
+
+.project-btn.active {
+  font-weight: 500;
+}
+
+.add-project-btn {
+  padding: 8px;
+  background-color: var(--main-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.add-project-btn:hover {
+  background-color: #d04436;
+  transform: translateY(-1px);
+}
+
+.add-project-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+}
+
+@media screen and (min-width: 1024px) {
+  .main {
+    grid-template-rows: 1fr;
+    grid-template-columns: 30% 1fr;
+  }
+
+  .todos-section {
+    grid-column: 2 / 3;
+  }
+
+  .projects-section {
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
+  }
+
+  .add-project-btn {
+    bottom: 25px;
+    right: 25px;
+  }
+}
