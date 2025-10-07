@@ -2,6 +2,7 @@ import PubSub from 'pubsub-js';
 
 const projectList = document.querySelector('.jsProjectList');
 const projectForm = document.querySelector('.jsProjectForm');
+const todosSectionHeading = document.querySelector('.jsTodosSectionHeading');
 
 function handleShowFormModalBtnClick(e) {
   const showModalBtn = e.currentTarget;
@@ -63,4 +64,18 @@ function resetForm(form) {
   form.reset();
 }
 
-export { attachEventListeners, addProject, resetForm };
+function switchProject(project) {
+  const activeProjectLi = projectList.querySelector('[data-project-id].active');
+  if (activeProjectLi) {
+    activeProjectLi.classList.remove('active');
+  }
+
+  const newActiveProjectLi = projectList.querySelector(
+    `[data-project-id="${project.id}"]`
+  );
+
+  newActiveProjectLi.classList.add('active');
+  todosSectionHeading.textContent = `${project.title}'s Todos`;
+}
+
+export { attachEventListeners, addProject, resetForm, switchProject };
