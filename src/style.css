@@ -186,6 +186,7 @@ button svg {
 }
 
 .project-btn {
+  color: inherit;
   width: 100%;
   background: transparent;
   border: none;
