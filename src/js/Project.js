@@ -6,6 +6,14 @@ class Project {
   }
 
   static #project = [];
+
+  static {
+    new Project('Default');
+  }
+
+  static all() {
+    return [...this.#project];
+  }
 }
 
 export default Project;

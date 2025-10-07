@@ -46,7 +46,7 @@ function attachEventListeners() {
   projectForm.addEventListener('submit', handleProjectFormSubmit);
 }
 
-function addProject(project) {
+function createProject(project) {
   const projectLi = document.createElement('li');
   projectLi.classList.add('project-list-item');
   projectLi.dataset.projectId = project.id;
@@ -57,6 +57,22 @@ function addProject(project) {
   button.textContent = project.title;
 
   projectLi.appendChild(button);
+
+  return projectLi;
+}
+
+function renderProjects(projects) {
+  for (const project of projects) {
+    addProject(project);
+  }
+
+  if (projects.length > 0) {
+    switchProject(projects[0]);
+  }
+}
+
+function addProject(project) {
+  const projectLi = createProject(project);
   projectList.appendChild(projectLi);
 }
 
@@ -78,4 +94,10 @@ function switchProject(project) {
   todosSectionHeading.textContent = `${project.title}'s Todos`;
 }
 
-export { attachEventListeners, addProject, resetForm, switchProject };
+export {
+  attachEventListeners,
+  renderProjects,
+  addProject,
+  resetForm,
+  switchProject,
+};

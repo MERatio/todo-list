@@ -8,3 +8,9 @@ PubSub.subscribe('project:create', (msg, data) => {
   dom.resetForm(data.form);
   dom.switchProject(project);
 });
+
+function init() {
+  dom.renderProjects(Project.all());
+}
+
+export { init };
