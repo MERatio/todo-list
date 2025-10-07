@@ -163,6 +163,7 @@ button svg {
 
 .project-list {
   list-style: none;
+  padding: 0 15%;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -170,25 +171,25 @@ button svg {
 }
 
 .project-list-item {
-  padding: 0 15%;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+
+.project-list-item:hover,
+.project-list-item.active {
+  color: var(--main-color);
+  border-bottom-color: var(--main-color);
+}
+
+.project-list-item.active {
+  font-weight: 500;
 }
 
 .project-btn {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 2px solid transparent;
   cursor: pointer;
-}
-
-.project-btn:hover,
-.project-btn.active {
-  color: var(--main-color);
-  border-bottom: 2px solid var(--main-color);
-}
-
-.project-btn.active {
-  font-weight: 500;
 }
 
 .show-modal-btn {
