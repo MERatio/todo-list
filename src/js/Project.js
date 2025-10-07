@@ -14,6 +14,10 @@ class Project {
   static all() {
     return [...this.#project];
   }
+
+  static findById(projectId) {
+    return this.#project.find((project) => project.id === projectId);
+  }
 }
 
 export default Project;

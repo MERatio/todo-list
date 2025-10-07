@@ -1,4 +1,5 @@
 import PubSub from 'pubsub-js';
+import Project from './Project.js';
 
 const projectList = document.querySelector('.jsProjectList');
 const projectForm = document.querySelector('.jsProjectForm');
@@ -32,6 +33,21 @@ function handleProjectFormSubmit(e) {
 }
 
 function createProject(project) {
+  function handleProjectBtnClick(e) {
+    const activeProjectLi = projectList.querySelector(
+      '[data-project-id].active'
+    );
+    const projectLi = e.currentTarget.closest('li[data-project-id]');
+    const projectId = projectLi.dataset.projectId;
+
+    if (activeProjectLi.dataset.projectId === projectId) {
+      return;
+    }
+
+    const project = Project.findById(projectId);
+    switchProject(project);
+  }
+
   const projectLi = document.createElement('li');
   projectLi.classList.add('project-list-item');
   projectLi.dataset.projectId = project.id;
@@ -40,6 +56,7 @@ function createProject(project) {
   button.setAttribute('type', 'button');
   button.classList.add('project-btn');
   button.textContent = project.title;
+  button.addEventListener('click', handleProjectBtnClick);
 
   projectLi.appendChild(button);
 
