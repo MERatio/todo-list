@@ -23,18 +23,52 @@
           Todo List
         </h1>
       </header>
+      <dialog class="modal" closedby="any" data-modal="projectFormModal">
+        <header class="modal-header">
+          <h3>Create todo</h3>
+          <button
+            type="button"
+            aria-label="Close"
+            class="jsCloseDialogBtn close-dialog-btn"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </header>
+        <form method="dialog" class="jsProjectForm form" data-operation="">
+          <div class="form-group">
+            <label for="project-title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="project-title"
+              required
+              maxlength="20"
+              autofocus
+            />
+          </div>
+          <div class="form-group">
+            <button type="submit" class="form-submit-btn">Add Todo</button>
+          </div>
+        </form>
+      </dialog>
       <main class="main">
         <section class="todos-section">
           <h2 class="text-center">Default's Todos</h2>
         </section>
         <section class="projects-section">
           <h2 class="text-center">Projects</h2>
-          <ul class="project-list">
+          <ul class="jsProjectList project-list">
             <li class="project-list-item">
               <button type="button" class="project-btn active">Default</button>
             </li>
           </ul>
-          <button type="button" class="add-project-btn" title="Add project">
+          <button
+            type="button"
+            class="jsShowModalBtn show-modal-btn"
+            title="Create project"
+            data-target-modal="projectFormModal"
+            data-operation="create"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
               <path
                 d="M440-120v-320H120v-80h320v-320h80v320h320v80H520v320h-80Z"
