@@ -11,6 +11,7 @@ PubSub.subscribe('project:create', (msg, data) => {
 
 function init() {
   dom.renderProjects(Project.all());
+  dom.attachEventListeners();
 }
 
 export { init };
