@@ -31,21 +31,6 @@ function handleProjectFormSubmit(e) {
   }
 }
 
-function attachEventListeners() {
-  const showModalBtns = document.querySelectorAll('.jsShowModalBtn');
-  const closeDialogBtns = document.querySelectorAll('.jsCloseDialogBtn');
-
-  for (const showModalBtn of showModalBtns) {
-    showModalBtn.addEventListener('click', handleShowFormModalBtnClick);
-  }
-
-  for (const closeDialogBtn of closeDialogBtns) {
-    closeDialogBtn.addEventListener('click', handleCloseDialogBtnClick);
-  }
-
-  projectForm.addEventListener('submit', handleProjectFormSubmit);
-}
-
 function createProject(project) {
   const projectLi = document.createElement('li');
   projectLi.classList.add('project-list-item');
@@ -63,7 +48,7 @@ function createProject(project) {
 
 function renderProjects(projects) {
   for (const project of projects) {
-    addProject(project);
+    renderProject(project);
   }
 
   if (projects.length > 0) {
@@ -71,7 +56,7 @@ function renderProjects(projects) {
   }
 }
 
-function addProject(project) {
+function renderProject(project) {
   const projectLi = createProject(project);
   projectList.appendChild(projectLi);
 }
@@ -94,10 +79,25 @@ function switchProject(project) {
   todosSectionHeading.textContent = `${project.title}'s Todos`;
 }
 
+function attachEventListeners() {
+  const showModalBtns = document.querySelectorAll('.jsShowModalBtn');
+  const closeDialogBtns = document.querySelectorAll('.jsCloseDialogBtn');
+
+  for (const showModalBtn of showModalBtns) {
+    showModalBtn.addEventListener('click', handleShowFormModalBtnClick);
+  }
+
+  for (const closeDialogBtn of closeDialogBtns) {
+    closeDialogBtn.addEventListener('click', handleCloseDialogBtnClick);
+  }
+
+  projectForm.addEventListener('submit', handleProjectFormSubmit);
+}
+
 export {
-  attachEventListeners,
   renderProjects,
-  addProject,
+  renderProject,
   resetForm,
   switchProject,
+  attachEventListeners,
 };
