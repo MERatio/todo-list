@@ -2,21 +2,21 @@ class Project {
   constructor(title) {
     this.id = crypto.randomUUID();
     this.title = title;
-    Project.#project.push(this);
+    Project.#projects.push(this);
   }
 
-  static #project = [];
+  static #projects = [];
 
   static {
     new Project('Default');
   }
 
   static all() {
-    return [...this.#project];
+    return [...this.#projects];
   }
 
   static findById(projectId) {
-    return this.#project.find((project) => project.id === projectId);
+    return this.#projects.find((project) => project.id === projectId);
   }
 }
 

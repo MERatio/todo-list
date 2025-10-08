@@ -1,5 +1,4 @@
 import PubSub from 'pubsub-js';
-import Project from './Project.js';
 
 const projectList = document.querySelector('.jsProjectList');
 const projectForm = document.querySelector('.jsProjectForm');
@@ -44,7 +43,6 @@ function createProject(project) {
       return;
     }
 
-    const project = Project.findById(projectId);
     switchProject(project);
   }
 
@@ -64,18 +62,11 @@ function createProject(project) {
 }
 
 function renderProjects(projects) {
+  projectList.replaceChildren();
   for (const project of projects) {
-    renderProject(project);
+    const projectLi = createProject(project);
+    projectList.appendChild(projectLi);
   }
-
-  if (projects.length > 0) {
-    switchProject(projects[0]);
-  }
-}
-
-function renderProject(project) {
-  const projectLi = createProject(project);
-  projectList.appendChild(projectLi);
 }
 
 function resetForm(form) {
@@ -111,10 +102,4 @@ function attachEventListeners() {
   projectForm.addEventListener('submit', handleProjectFormSubmit);
 }
 
-export {
-  renderProjects,
-  renderProject,
-  resetForm,
-  switchProject,
-  attachEventListeners,
-};
+export { renderProjects, resetForm, switchProject, attachEventListeners };
