@@ -1,7 +1,7 @@
 import PubSub from 'pubsub-js';
 import Project from './Project.js';
 import Todo from './Todo.js';
-import * as dom from './dom.js';
+import * as dom from './dom/index.js';
 
 PubSub.subscribe('project:create', (msg, data) => {
   const project = new Project(data.title);
