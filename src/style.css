@@ -2,6 +2,8 @@
   --system-ui: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   --main-color: #e74c3c;
+  --orange: #e67e22;
+  --blue: #3498db;
   --border-radius: 8px;
 }
 
@@ -36,6 +38,30 @@ button svg {
 
 .text-center {
   text-align: center;
+}
+
+.fill-red {
+  fill: var(--main-color);
+}
+
+.fill-orange {
+  fill: var(--orange);
+}
+
+.fill-blue {
+  fill: var(--blue);
+}
+
+.red {
+  color: var(--main-color);
+}
+
+.orange {
+  color: var(--orange);
+}
+
+.blue {
+  color: var(--blue);
 }
 
 .container {
@@ -119,6 +145,8 @@ button svg {
 }
 
 .form-control {
+  font-family: inherit;
+  font-size: 90%;
   padding: 6px;
 }
 
@@ -144,11 +172,50 @@ button svg {
 
 .todos-section {
   padding: 8px;
+  position: relative;
 }
 
-.todos-section .h2,
-.projects-section .h2 {
+.todos-section-heading {
   text-align: center;
+  margin-bottom: 8px;
+}
+
+.todo {
+  display: flex;
+  align-items: start;
+  column-gap: 5px;
+}
+
+.todo:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.todo-complete-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -1px;
+}
+
+.todo-complete-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.todo-texts {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1px;
+  cursor: pointer;
+}
+
+.todo-title {
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .projects-section {
@@ -159,6 +226,10 @@ button svg {
   gap: 8px;
   overflow: auto;
   position: relative;
+}
+
+.projects-section .h2 {
+  text-align: center;
 }
 
 .project-list {

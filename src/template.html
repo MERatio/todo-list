@@ -51,9 +51,82 @@
           </div>
         </form>
       </dialog>
+      <dialog
+        class="todoFormModal modal"
+        closedby="any"
+        data-modal="todoFormModal"
+      >
+        <header class="modal-header">
+          <h3>Create Todo</h3>
+          <button
+            type="button"
+            aria-label="Close"
+            class="jsCloseDialogBtn close-dialog-btn"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </header>
+        <form method="dialog" class="jsTodoForm form" data-operation="">
+          <input type="hidden" id="todo-project-id" />
+          <div class="form-group">
+            <label for="todo-title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="todo-title"
+              required
+              maxlength="20"
+              autofocus
+            />
+          </div>
+          <div class="form-group">
+            <label for="todo-description" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              id="todo-description"
+              rows="5"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="todo-due-date" class="form-label">Due Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="todo-due-date"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="todo-priority" class="form-label">Priority</label>
+            <select class="form-control" id="todo-priority">
+              <option value="urgent">Urgent</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="form-submit-btn">Add Todo</button>
+          </div>
+        </form>
+      </dialog>
       <main class="main">
         <section class="todos-section">
-          <h2 class="jsTodosSectionHeading text-center"></h2>
+          <h2 class="jsTodosSectionHeading todos-section-heading"></h2>
+          <ul class="jsTodoList"></ul>
+          <button
+            type="button"
+            class="jsShowTodoFormModalBtn jsShowModalBtn show-modal-btn"
+            title="Create todo"
+            data-target-modal="todoFormModal"
+            data-operation="create"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+              <path
+                d="M440-120v-320H120v-80h320v-320h80v320h320v80H520v320h-80Z"
+              />
+            </svg>
+          </button>
         </section>
         <section class="projects-section">
           <h2 class="text-center">Projects</h2>

@@ -1,5 +1,6 @@
 import PubSub from 'pubsub-js';
 import Project from './Project.js';
+import Todo from './Todo.js';
 import * as dom from './dom.js';
 
 PubSub.subscribe('project:create', (msg, data) => {
@@ -8,6 +9,14 @@ PubSub.subscribe('project:create', (msg, data) => {
   dom.resetForm(data.form);
   dom.renderProjects(projects);
   dom.switchProject(project);
+});
+
+PubSub.subscribe('todo:create', (msg, data) => {
+  const { form, projectId, title, description, dueDate, priority } = data;
+  new Todo(projectId, title, description, dueDate, priority);
+  const todos = Todo.all();
+  dom.renderTodos(todos);
+  dom.resetForm(form);
 });
 
 function init() {
