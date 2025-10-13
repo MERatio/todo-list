@@ -152,7 +152,7 @@ button svg {
 
 .form-submit-btn:hover,
 .show-modal-btn:hover {
-  background-color: #d04436;
+  background-color: #e95e50;
 }
 
 .form-submit-btn {
@@ -198,6 +198,22 @@ button svg {
   justify-content: center;
   align-items: center;
   margin-top: -1px;
+}
+
+.todo-complete-btn:hover svg.fill-red {
+  fill: #ee8277;
+}
+
+.todo-complete-btn:hover svg.fill-orange {
+  fill: #eea564;
+}
+
+.todo-complete-btn:hover svg.fill-blue {
+  fill: #71b7e6;
+}
+
+.todo-complete-btn:hover svg.fill-black {
+  fill: #4d4d4d;
 }
 
 .todo-complete-btn svg {
@@ -276,7 +292,6 @@ button svg {
 }
 
 .show-modal-btn:hover {
-  background-color: #d04436;
   transform: translateY(-1px);
 }
 

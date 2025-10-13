@@ -48,7 +48,7 @@ function renderTodos(todos) {
         case 'medium':
           return 'fill-blue';
         default:
-          return '';
+          return 'fill-black';
       }
     }
 
