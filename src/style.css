@@ -171,7 +171,7 @@ button svg {
 }
 
 .todos-section {
-  padding: 8px;
+  padding: 8px 0px;
   position: relative;
 }
 
@@ -184,10 +184,16 @@ button svg {
   display: flex;
   align-items: start;
   column-gap: 5px;
+  padding: 10px;
+  cursor: pointer;
 }
 
 .todo:not(:last-child) {
   margin-bottom: 15px;
+}
+
+.todo:hover {
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 .todo-complete-btn {
@@ -226,7 +232,6 @@ button svg {
   display: flex;
   flex-direction: column;
   row-gap: 1px;
-  cursor: pointer;
 }
 
 .todo-title {

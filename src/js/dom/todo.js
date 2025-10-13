@@ -61,6 +61,7 @@ function renderTodos(todos) {
     const todoEl = document.createElement('li');
     todoEl.classList.add('todo');
     todoEl.dataset.todoId = todo.id;
+    todoEl.setAttribute('tabindex', '0');
 
     const completeBtn = document.createElement('button');
     completeBtn.setAttribute('type', 'button');
@@ -76,7 +77,6 @@ function renderTodos(todos) {
 
     const textsEl = document.createElement('div');
     textsEl.classList.add('todo-texts');
-    textsEl.setAttribute('tabindex', '0');
     todoEl.appendChild(textsEl);
 
     const titleEl = document.createElement('p');
