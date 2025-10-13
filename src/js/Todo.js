@@ -16,6 +16,14 @@ class Todo {
   static findByFilter(filter) {
     return helpers.findByFilter(this.#todos, filter);
   }
+
+  static findById(todoId) {
+    return this.#todos.find((todo) => todo.id === todoId);
+  }
+
+  static deleteById(todoId) {
+    this.#todos = this.#todos.filter((todo) => todo.id !== todoId);
+  }
 }
 
 export default Todo;

@@ -21,6 +21,13 @@ PubSub.subscribe('todo:create', (msg, data) => {
   dom.resetForm(form);
 });
 
+PubSub.subscribe('todo:delete', (msg, data) => {
+  const projectId = Todo.findById(data.todoId).projectId;
+  Todo.deleteById(data.todoId);
+  const todos = Todo.findByFilter({ projectId });
+  dom.renderTodos(todos);
+});
+
 function init() {
   const projects = Project.all();
   dom.renderProjects(projects);
