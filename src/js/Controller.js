@@ -3,14 +3,20 @@ import Project from './Project.js';
 import Todo from './Todo.js';
 import * as dom from './dom/index.js';
 
+PubSub.subscribe('project:switch', (msg, data) => {
+  const project = Project.findById(data.projectId);
+  const todos = Todo.findByFilter({ projectId: project.id });
+  dom.switchProject(project);
+  dom.renderTodos(todos);
+});
+
 PubSub.subscribe('project:create', (msg, data) => {
   const project = new Project(data.title);
   const projects = Project.all();
   const todos = Todo.findByFilter({ projectId: project.id });
   dom.resetForm(data.form);
   dom.renderProjects(projects);
-  dom.switchProject(project);
-  dom.renderTodos(todos);
+  PubSub.publish('project:switch', { projectId: project.id });
 });
 
 PubSub.subscribe('todo:create', (msg, data) => {
