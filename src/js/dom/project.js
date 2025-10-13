@@ -1,4 +1,6 @@
 import PubSub from 'pubsub-js';
+import Todo from '../Todo.js';
+import { renderTodos } from './todo.js';
 
 const projectList = document.querySelector('.jsProjectList');
 
@@ -27,7 +29,10 @@ function renderProjects(projects) {
         return;
       }
 
+      const todos = Todo.findByFilter({ projectId: project.id });
+
       switchProject(project);
+      renderTodos(todos);
     }
 
     const projectEl = document.createElement('li');

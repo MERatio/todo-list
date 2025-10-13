@@ -1,3 +1,5 @@
+import * as helpers from './helpers.js';
+
 class Todo {
   constructor(projectId, title, description, dueDate, priority) {
     this.id = crypto.randomUUID();
@@ -11,8 +13,8 @@ class Todo {
 
   static #todos = [];
 
-  static all() {
-    return [...this.#todos];
+  static findByFilter(filter) {
+    return helpers.findByFilter(this.#todos, filter);
   }
 }
 
