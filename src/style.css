@@ -90,81 +90,6 @@ button svg {
   fill: #fff;
 }
 
-.modal {
-  width: 100%;
-  max-width: 300px;
-  border: 2px solid var(--main-color);
-  border-radius: var(--border-radius);
-  margin: 15% auto auto auto;
-}
-
-.modal-header {
-  padding: 10px;
-  background-color: var(--main-color);
-  position: relative;
-}
-
-.modal-header h3 {
-  text-align: center;
-  color: #fff;
-}
-
-.close-dialog-btn {
-  width: 30px;
-  aspect-ratio: 1 / 1;
-  font-size: 1.4rem;
-  color: #fff;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.close-dialog-btn:hover {
-  color: #e6e6e6;
-}
-
-.form,
-.todo-infos {
-  padding: 10px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  row-gap: 3px;
-}
-
-.form-group:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.form-label {
-  font-weight: 500;
-}
-
-.form-control {
-  font-family: inherit;
-  font-size: 90%;
-  padding: 6px;
-}
-
-.form-submit-btn:hover,
-.show-modal-btn:hover {
-  background-color: #e95e50;
-}
-
-.form-submit-btn {
-  font-weight: 700;
-  color: #fff;
-  padding: 6px;
-  background-color: var(--main-color);
-  border: none;
-  cursor: pointer;
-}
-
 .main {
   flex: 1;
   display: grid;
@@ -305,6 +230,81 @@ button svg {
   width: 24px;
   height: 24px;
   fill: #fff;
+}
+
+.modal {
+  width: 100%;
+  max-width: 300px;
+  border: 2px solid var(--main-color);
+  border-radius: var(--border-radius);
+  margin: 15% auto auto auto;
+}
+
+.modal-header {
+  padding: 10px;
+  background-color: var(--main-color);
+  position: relative;
+}
+
+.modal-header h3 {
+  text-align: center;
+  color: #fff;
+}
+
+.close-dialog-btn {
+  width: 30px;
+  aspect-ratio: 1 / 1;
+  font-size: 1.4rem;
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.close-dialog-btn:hover {
+  color: #e6e6e6;
+}
+
+.form,
+.todo-infos {
+  padding: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+}
+
+.form-group:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+.form-control {
+  font-family: inherit;
+  font-size: 90%;
+  padding: 6px;
+}
+
+.form-submit-btn:hover,
+.show-modal-btn:hover {
+  background-color: #e95e50;
+}
+
+.form-submit-btn {
+  font-weight: 700;
+  color: #fff;
+  padding: 6px;
+  background-color: var(--main-color);
+  border: none;
+  cursor: pointer;
 }
 
 .todo-info {
