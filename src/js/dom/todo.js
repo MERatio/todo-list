@@ -14,6 +14,21 @@ function renderTodos(todos) {
   todoListEl.replaceChildren();
 
   function createTodo(todo) {
+    function handleTodoClick(e) {
+      const todoModal = document.querySelector('.jsTodoModal');
+      const todoInfoTitleEl = todoModal.querySelector('.jsTodoInfoTitle');
+      const todoInfoDescriptionEl = todoModal.querySelector(
+        '.jsTodoInfoDescription'
+      );
+      const todoInfoDueDateEl = todoModal.querySelector('.jsTodoInfoDueDate');
+      const todoInfoPriorityEl = todoModal.querySelector('.jsTodoInfoPriority');
+      todoInfoTitleEl.textContent = todo.title;
+      todoInfoDescriptionEl.textContent = todo.description;
+      todoInfoDueDateEl.textContent = todo.dueDate;
+      todoInfoPriorityEl.textContent = todo.priority;
+      todoModal.showModal();
+    }
+
     function getDueDateEl(dateStr) {
       const dueDateEl = document.createElement('p');
       const date = parseISO(dateStr);
@@ -53,6 +68,7 @@ function renderTodos(todos) {
     }
 
     function handleCompleteTodoBtnClick(e) {
+      e.stopPropagation();
       const todoEl = e.currentTarget.closest('li[data-todo-id]');
       const todoId = todoEl.dataset.todoId;
       PubSub.publish('todo:delete', { todoId });
@@ -62,6 +78,14 @@ function renderTodos(todos) {
     todoEl.classList.add('todo');
     todoEl.dataset.todoId = todo.id;
     todoEl.setAttribute('tabindex', '0');
+    todoEl.addEventListener('click', handleTodoClick);
+    todoEl.addEventListener('keydown', (e) => {
+      // Keyboard access (Enter and Space)
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault(); // Prevent scrolling on Space
+        handleTodoClick();
+      }
+    });
 
     const completeBtn = document.createElement('button');
     completeBtn.setAttribute('type', 'button');

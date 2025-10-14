@@ -147,5 +147,36 @@
         </section>
       </main>
     </div>
+    <dialog class="jsTodoModal modal" closedby="any">
+      <header class="modal-header">
+        <h3>Todo Information</h3>
+        <button
+          type="button"
+          aria-label="Close"
+          class="jsCloseDialogBtn close-dialog-btn"
+          autofocus
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </header>
+      <div class="todo-infos">
+        <div class="todo-info">
+          <p class="todo-info-label">Title:</p>
+          <p class="jsTodoInfoTitle todo-info-data"></p>
+        </div>
+        <div class="todo-info">
+          <p class="todo-info-label">Description:</p>
+          <p class="jsTodoInfoDescription todo-info-data"></p>
+        </div>
+        <div class="todo-info">
+          <p class="todo-info-label">Due Date:</p>
+          <p class="jsTodoInfoDueDate todo-info-data"></p>
+        </div>
+        <div class="todo-info">
+          <p class="todo-info-label">Priority</p>
+          <p class="jsTodoInfoPriority todo-info-data"></p>
+        </div>
+      </div>
+    </dialog>
   </body>
 </html>
