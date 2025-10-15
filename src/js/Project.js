@@ -1,3 +1,5 @@
+import * as helpers from './helpers.js';
+
 class Project {
   constructor(title) {
     this.id = crypto.randomUUID();
@@ -17,6 +19,10 @@ class Project {
 
   static findById(projectId) {
     return this.#projects.find((project) => project.id === projectId);
+  }
+
+  static deleteMany(filter) {
+    this.#projects = helpers.excludeByFilter(this.#projects, filter);
   }
 }
 

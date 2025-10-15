@@ -24,6 +24,10 @@ class Todo {
   static deleteById(todoId) {
     this.#todos = this.#todos.filter((todo) => todo.id !== todoId);
   }
+
+  static deleteMany(filter) {
+    this.#todos = helpers.excludeByFilter(this.#todos, filter);
+  }
 }
 
 export default Todo;

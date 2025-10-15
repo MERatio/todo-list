@@ -4,7 +4,19 @@ import Todo from './Todo.js';
 import * as dom from './dom/index.js';
 
 PubSub.subscribe('project:switch', (msg, data) => {
-  const project = Project.findById(data.projectId);
+  let project = data.project;
+
+  if (project === null) {
+    const projects = Project.all();
+    if (projects.length < 1) {
+      dom.switchProject(null);
+      dom.renderTodos([]);
+      return;
+    } else {
+      project = projects[0];
+    }
+  }
+
   const todos = Todo.findByFilter({ projectId: project.id });
   dom.switchProject(project);
   dom.renderTodos(todos);
@@ -16,7 +28,15 @@ PubSub.subscribe('project:create', (msg, data) => {
   const todos = Todo.findByFilter({ projectId: project.id });
   dom.resetForm(data.form);
   dom.renderProjects(projects);
-  PubSub.publish('project:switch', { projectId: project.id });
+  PubSub.publish('project:switch', { project });
+});
+
+PubSub.subscribe('project:delete', (msg, data) => {
+  Project.deleteMany({ id: data.projectId });
+  Todo.deleteMany({ projectId: data.projectId });
+  const projects = Project.all();
+  dom.renderProjects(projects);
+  PubSub.publish('project:switch', { project: null });
 });
 
 PubSub.subscribe('todo:create', (msg, data) => {

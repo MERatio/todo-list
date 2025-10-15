@@ -191,6 +191,7 @@ button svg {
 .project-list-item {
   padding-bottom: 4px;
   border-bottom: 2px solid transparent;
+  display: flex;
 }
 
 .project-list-item:hover,
@@ -204,11 +205,15 @@ button svg {
 }
 
 .project-btn {
+  flex: 1;
   color: inherit;
-  width: 100%;
   background: transparent;
   border: none;
   cursor: pointer;
+}
+
+.project-delete-btn:hover {
+  color: var(--main-color);
 }
 
 .show-modal-btn {
@@ -251,14 +256,18 @@ button svg {
   color: #fff;
 }
 
-.close-dialog-btn {
+.close-dialog-btn,
+.project-delete-btn {
   width: 30px;
   aspect-ratio: 1 / 1;
   font-size: 1.4rem;
-  color: #fff;
   background-color: transparent;
   border: none;
   cursor: pointer;
+}
+
+.close-dialog-btn {
+  color: #fff;
   position: absolute;
   top: 0;
   right: 0;

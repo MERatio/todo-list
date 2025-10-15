@@ -27,7 +27,11 @@ function renderProjects(projects) {
         return;
       }
 
-      PubSub.publish('project:switch', { projectId });
+      PubSub.publish('project:switch', { project });
+    }
+
+    function handleProjectDeleteBtnClick() {
+      PubSub.publish('project:delete', { projectId: project.id });
     }
 
     const projectEl = document.createElement('li');
@@ -39,8 +43,14 @@ function renderProjects(projects) {
     button.classList.add('project-btn');
     button.textContent = project.title;
     button.addEventListener('click', handleProjectBtnClick);
-
     projectEl.appendChild(button);
+
+    const projectDeleteBtn = document.createElement('button');
+    projectDeleteBtn.setAttribute('type', 'button');
+    projectDeleteBtn.classList.add('project-delete-btn');
+    projectDeleteBtn.innerHTML = '<span aria-hidden="true">&times;</span>';
+    projectDeleteBtn.addEventListener('click', handleProjectDeleteBtnClick);
+    projectEl.appendChild(projectDeleteBtn);
 
     return projectEl;
   }
@@ -53,19 +63,26 @@ function renderProjects(projects) {
 }
 
 function switchProject(project) {
-  const activeProjectEl = projectList.querySelector('[data-project-id].active');
   const todosSectionHeading = document.querySelector('.jsTodosSectionHeading');
 
-  if (activeProjectEl) {
-    activeProjectEl.classList.remove('active');
+  if (project === null) {
+    todosSectionHeading.textContent = '';
+  } else {
+    const activeProjectEl = projectList.querySelector(
+      '[data-project-id].active'
+    );
+
+    if (activeProjectEl) {
+      activeProjectEl.classList.remove('active');
+    }
+
+    const newActiveProjectEl = projectList.querySelector(
+      `[data-project-id="${project.id}"]`
+    );
+
+    newActiveProjectEl.classList.add('active');
+    todosSectionHeading.textContent = `${project.title}'s Todos`;
   }
-
-  const newActiveProjectEl = projectList.querySelector(
-    `[data-project-id="${project.id}"]`
-  );
-
-  newActiveProjectEl.classList.add('active');
-  todosSectionHeading.textContent = `${project.title}'s Todos`;
 }
 
 function attachProjectsEventListeners() {
