@@ -48,9 +48,8 @@ PubSub.subscribe('todo:create', (msg, data) => {
 });
 
 PubSub.subscribe('todo:delete', (msg, data) => {
-  const projectId = Todo.findById(data.todoId).projectId;
-  Todo.deleteById(data.todoId);
-  const todos = Todo.findByFilter({ projectId });
+  Todo.deleteMany({ id: data.todo.id });
+  const todos = Todo.findByFilter({ projectId: data.todo.projectId });
   dom.renderTodos(todos);
 });
 
@@ -58,7 +57,7 @@ function init() {
   const projects = Project.all();
   dom.renderProjects(projects);
   if (projects.length > 0) {
-    dom.switchProject(projects[0]);
+    PubSub.publish('project:switch', { project: projects[0] });
   }
   dom.attachEventListeners();
 }

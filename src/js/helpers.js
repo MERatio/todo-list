@@ -1,13 +1,10 @@
-function findByFilter(arr, filter) {
-  return arr.filter((item) => {
-    return Object.entries(filter).every(([key, value]) => item[key] === value);
-  });
+function isMatch(item, filter) {
+  return Object.entries(filter).every(([key, value]) => item[key] === value);
 }
-
-function excludeByFilter(arr, filter) {
-  return arr.filter((item) => {
-    return !Object.entries(filter).every(([key, value]) => item[key] === value);
-  });
+function filterBy(arr, filter) {
+  return arr.filter((item) => isMatch(item, filter));
 }
-
-export { findByFilter, excludeByFilter };
+function filterOutBy(arr, filter) {
+  return arr.filter((item) => !isMatch(item, filter));
+}
+export { filterBy, filterOutBy };

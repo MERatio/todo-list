@@ -22,7 +22,7 @@ class Project {
   }
 
   static deleteMany(filter) {
-    this.#projects = helpers.excludeByFilter(this.#projects, filter);
+    this.#projects = helpers.filterOutBy(this.#projects, filter);
   }
 }
 

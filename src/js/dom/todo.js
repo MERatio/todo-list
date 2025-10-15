@@ -69,14 +69,11 @@ function renderTodos(todos) {
 
     function handleCompleteTodoBtnClick(e) {
       e.stopPropagation();
-      const todoEl = e.currentTarget.closest('li[data-todo-id]');
-      const todoId = todoEl.dataset.todoId;
-      PubSub.publish('todo:delete', { todoId });
+      PubSub.publish('todo:delete', { todo });
     }
 
     const todoEl = document.createElement('li');
     todoEl.classList.add('todo');
-    todoEl.dataset.todoId = todo.id;
     todoEl.setAttribute('tabindex', '0');
     todoEl.addEventListener('click', handleTodoClick);
     todoEl.addEventListener('keydown', (e) => {

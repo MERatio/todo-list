@@ -14,19 +14,15 @@ class Todo {
   static #todos = [];
 
   static findByFilter(filter) {
-    return helpers.findByFilter(this.#todos, filter);
+    return helpers.filterBy(this.#todos, filter);
   }
 
   static findById(todoId) {
     return this.#todos.find((todo) => todo.id === todoId);
   }
 
-  static deleteById(todoId) {
-    this.#todos = this.#todos.filter((todo) => todo.id !== todoId);
-  }
-
   static deleteMany(filter) {
-    this.#todos = helpers.excludeByFilter(this.#todos, filter);
+    this.#todos = helpers.filterOutBy(this.#todos, filter);
   }
 }
 
