@@ -21,6 +21,17 @@ class Project {
     return this.#projects.find((project) => project.id === projectId);
   }
 
+  static findByIdAndUpdate(projectId, updatedProps) {
+    this.#projects = helpers.updateObjectInArray(
+      this.#projects,
+      projectId,
+      updatedProps
+    );
+
+    const updatedProject = this.findById(projectId);
+    return updatedProject;
+  }
+
   static deleteMany(filter) {
     this.#projects = helpers.filterOutBy(this.#projects, filter);
   }

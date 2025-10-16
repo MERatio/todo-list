@@ -212,6 +212,10 @@ button svg {
   cursor: pointer;
 }
 
+.project-edit-btn:hover {
+  fill: var(--orange);
+}
+
 .project-delete-btn:hover {
   color: var(--main-color);
 }
@@ -257,10 +261,14 @@ button svg {
 }
 
 .close-dialog-btn,
+.project-edit-btn,
 .project-delete-btn {
-  width: 30px;
+  width: 22px;
   aspect-ratio: 1 / 1;
   font-size: 1.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: transparent;
   border: none;
   cursor: pointer;

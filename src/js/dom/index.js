@@ -1,4 +1,8 @@
 import {
+  handleShowFormModalBtnClick,
+  handleCloseDialogBtnClick,
+} from './shared.js';
+import {
   renderProjects,
   switchProject,
   attachProjectsEventListeners,
@@ -12,21 +16,6 @@ function resetForm(form) {
 function attachEventListeners() {
   const showModalBtns = document.querySelectorAll('.jsShowModalBtn');
   const closeDialogBtns = document.querySelectorAll('.jsCloseDialogBtn');
-
-  function handleShowFormModalBtnClick(e) {
-    const showModalBtn = e.currentTarget;
-    const targetModalName = showModalBtn.dataset.targetModal;
-    const modal = document.querySelector(`[data-modal="${targetModalName}"]`);
-    const operation = showModalBtn.dataset.operation;
-    const form = modal.querySelector('form');
-    form.dataset.operation = operation;
-    modal.showModal();
-  }
-
-  function handleCloseDialogBtnClick(e) {
-    const dialog = e.target.closest('dialog');
-    dialog.close();
-  }
 
   for (const showModalBtn of showModalBtns) {
     showModalBtn.addEventListener('click', handleShowFormModalBtnClick);

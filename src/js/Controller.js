@@ -31,6 +31,16 @@ PubSub.subscribe('project:create', (msg, data) => {
   PubSub.publish('project:switch', { project });
 });
 
+PubSub.subscribe('project:edit', (msg, data) => {
+  const updatedProject = Project.findByIdAndUpdate(data.projectId, {
+    title: data.title,
+  });
+  const projects = Project.all();
+  dom.resetForm(data.form);
+  dom.renderProjects(projects);
+  PubSub.publish('project:switch', { project: updatedProject });
+});
+
 PubSub.subscribe('project:delete', (msg, data) => {
   Project.deleteMany({ id: data.projectId });
   Todo.deleteMany({ projectId: data.projectId });
