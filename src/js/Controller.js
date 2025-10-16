@@ -25,7 +25,6 @@ PubSub.subscribe('project:switch', (msg, data) => {
 PubSub.subscribe('project:create', (msg, data) => {
   const project = new Project(data.title);
   const projects = Project.all();
-  const todos = Todo.findByFilter({ projectId: project.id });
   dom.resetForm(data.form);
   dom.renderProjects(projects);
   PubSub.publish('project:switch', { project });
