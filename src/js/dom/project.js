@@ -79,7 +79,16 @@ function renderProjects(projects) {
     const projectDeleteBtn = document.createElement('button');
     projectDeleteBtn.setAttribute('type', 'button');
     projectDeleteBtn.classList.add('project-delete-btn');
-    projectDeleteBtn.innerHTML = '<span aria-hidden="true">&times;</span>';
+    projectDeleteBtn.innerHTML = `
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 -960 960 960"
+      >
+        <path
+          d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+        />
+      </svg>
+    `;
     projectDeleteBtn.addEventListener('click', handleProjectDeleteBtnClick);
     projectEl.appendChild(projectDeleteBtn);
 
