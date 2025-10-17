@@ -4,7 +4,13 @@ import { handleShowModalBtnClick } from './shared.js';
 const projectList = document.querySelector('.jsProjectList');
 const projectIdInput = document.querySelector('#project-id');
 const projectTitleInput = document.querySelector('#project-title');
+const projectFormModalHeading = document.querySelector(
+  '.jsProjectFormModalHeading'
+);
 const projectForm = document.querySelector('.jsProjectForm');
+const projectFormSubmitBtn = projectForm.querySelector(
+  '.jsProjectFormSubmitBtn'
+);
 
 function handleProjectFormSubmit(e) {
   const form = e.currentTarget;
@@ -43,7 +49,9 @@ function renderProjects(projects) {
     }
 
     function handleProjectEditBtnClick() {
+      projectFormModalHeading.textContent = 'Edit Project';
       projectForm.dataset.submitOperation = 'update';
+      projectFormSubmitBtn.textContent = 'Update Project';
       PubSub.publish('project:edit', { projectId: project.id });
     }
 
@@ -138,7 +146,9 @@ function attachProjectsEventListeners() {
   const projectNewBtn = document.querySelector('.jsProjectNewBtn');
 
   function handleProjectNewBtnClick() {
+    projectFormModalHeading.textContent = 'Create New Project';
     projectForm.dataset.submitOperation = 'create';
+    projectFormSubmitBtn.textContent = 'Create Project';
   }
 
   projectNewBtn.addEventListener('click', handleProjectNewBtnClick);

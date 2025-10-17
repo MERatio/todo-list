@@ -9,6 +9,10 @@ import {
   format,
 } from 'date-fns';
 
+const todoFormModalHeading = document.querySelector('.jsTodoFormModalHeading');
+const todoForm = document.querySelector('.jsTodoForm');
+const todoFormSubmitBtn = todoForm.querySelector('.jsTodoFormSubmitBtn');
+
 function renderTodos(todos) {
   const todoListEl = document.querySelector('.jsTodoList');
   todoListEl.replaceChildren();
@@ -120,7 +124,6 @@ function renderTodos(todos) {
 function attachTodosEventListeners() {
   const todoProjectIdInput = document.querySelector('#todo-project-id');
   const showTodoFormModalBtn = document.querySelector('.jsTodoNewBtn');
-  const todoForm = document.querySelector('.jsTodoForm');
 
   function handleShowTodoFormModalBtnClick() {
     const activeProjectEl = document.querySelector('[data-project-id].active');
@@ -135,7 +138,9 @@ function attachTodosEventListeners() {
   }
 
   function handleTodoNewBtnClick() {
+    todoFormModalHeading.textContent = 'Create New Todo';
     todoForm.dataset.submitOperation = 'create';
+    todoFormSubmitBtn.textContent = 'Create Todo';
   }
 
   function handleTodoFormSubmit(e) {
