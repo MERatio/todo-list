@@ -119,9 +119,7 @@ function renderTodos(todos) {
 
 function attachTodosEventListeners() {
   const todoProjectIdInput = document.querySelector('#todo-project-id');
-  const showTodoFormModalBtn = document.querySelector(
-    '.jsShowTodoFormModalBtn'
-  );
+  const showTodoFormModalBtn = document.querySelector('.jsTodoNewBtn');
   const todoForm = document.querySelector('.jsTodoForm');
 
   function handleShowTodoFormModalBtnClick() {
@@ -136,16 +134,20 @@ function attachTodosEventListeners() {
     todoDueDateInput.value = today;
   }
 
+  function handleTodoNewBtnClick() {
+    todoForm.dataset.submitOperation = 'create';
+  }
+
   function handleTodoFormSubmit(e) {
     const form = e.currentTarget;
-    const operation = form.dataset.operation;
+    const submitOperation = form.dataset.submitOperation;
     const projectId = todoProjectIdInput.value;
     const title = form.querySelector('#todo-title').value;
     const description = form.querySelector('#todo-description').value;
     const dueDate = form.querySelector('#todo-due-date').value;
     const priority = form.querySelector('#todo-priority').value;
 
-    switch (operation) {
+    switch (submitOperation) {
       case 'create':
         PubSub.publish('todo:create', {
           form,
@@ -163,6 +165,7 @@ function attachTodosEventListeners() {
     'click',
     handleShowTodoFormModalBtnClick
   );
+  showTodoFormModalBtn.addEventListener('click', handleTodoNewBtnClick);
   todoForm.addEventListener('submit', handleTodoFormSubmit);
 }
 

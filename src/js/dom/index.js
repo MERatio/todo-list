@@ -1,5 +1,5 @@
 import {
-  handleShowFormModalBtnClick,
+  handleShowModalBtnClick,
   handleCloseDialogBtnClick,
 } from './shared.js';
 import {
@@ -19,7 +19,7 @@ function attachEventListeners() {
   const closeDialogBtns = document.querySelectorAll('.jsCloseDialogBtn');
 
   for (const showModalBtn of showModalBtns) {
-    showModalBtn.addEventListener('click', handleShowFormModalBtnClick);
+    showModalBtn.addEventListener('click', handleShowModalBtnClick);
   }
 
   for (const closeDialogBtn of closeDialogBtns) {

@@ -29,10 +29,9 @@
           <ul class="jsTodoList"></ul>
           <button
             type="button"
-            class="jsShowTodoFormModalBtn jsShowModalBtn show-modal-btn"
-            aria-label="Create todo"
+            class="jsTodoNewBtn jsShowModalBtn show-modal-btn"
+            aria-label="Create new todo"
             data-target-modal="todoFormModal"
-            data-operation="create"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
               <path
@@ -46,10 +45,9 @@
           <ul class="jsProjectList project-list"></ul>
           <button
             type="button"
-            class="jsShowModalBtn show-modal-btn"
-            aria-label="Create project"
+            class="jsProjectNewBtn jsShowModalBtn show-modal-btn"
+            aria-label="Create new project"
             data-target-modal="projectFormModal"
-            data-operation="create"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
               <path
@@ -75,7 +73,7 @@
           </svg>
         </button>
       </header>
-      <form method="dialog" class="jsProjectForm form" data-operation="">
+      <form method="dialog" class="jsProjectForm form" data-submit-operation="">
         <input type="hidden" id="project-id" />
         <div class="form-group">
           <label for="project-title" class="form-label">Title</label>
@@ -112,7 +110,7 @@
           </svg>
         </button>
       </header>
-      <form method="dialog" class="jsTodoForm form" data-operation="">
+      <form method="dialog" class="jsTodoForm form" data-submit-operation="">
         <input type="hidden" id="todo-project-id" />
         <div class="form-group">
           <label for="todo-title" class="form-label">Title</label>
