@@ -4,6 +4,7 @@ import {
 } from './shared.js';
 import {
   renderProjects,
+  populateProjectForm,
   switchProject,
   attachProjectsEventListeners,
 } from './project.js';
@@ -32,6 +33,7 @@ function attachEventListeners() {
 export {
   resetForm,
   renderProjects,
+  populateProjectForm,
   switchProject,
   renderTodos,
   attachEventListeners,

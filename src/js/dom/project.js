@@ -3,20 +3,22 @@ import { handleShowFormModalBtnClick } from './shared.js';
 
 const projectList = document.querySelector('.jsProjectList');
 const projectIdInput = document.querySelector('#project-id');
+const projectTitleInput = document.querySelector('#project-title');
 
 function handleProjectFormSubmit(e) {
   const form = e.currentTarget;
   const operation = form.dataset.operation;
-  const title = form.querySelector('#project-title').value;
+  const projectId = projectIdInput.value;
+  const title = projectTitleInput.value;
 
   switch (operation) {
     case 'create':
       PubSub.publish('project:create', { form, title });
       break;
-    case 'edit':
-      PubSub.publish('project:edit', {
+    case 'update':
+      PubSub.publish('project:update', {
         form,
-        projectId: projectIdInput.value,
+        projectId,
         title,
       });
   }
@@ -39,7 +41,7 @@ function renderProjects(projects) {
     }
 
     function handleProjectEditBtnClick() {
-      projectIdInput.value = project.id;
+      PubSub.publish('project:edit', { projectId: project.id });
     }
 
     function handleProjectDeleteBtnClick() {
@@ -62,7 +64,7 @@ function renderProjects(projects) {
     projectEditBtn.setAttribute('aria-label', 'Edit project');
     projectEditBtn.classList.add('project-edit-btn');
     projectEditBtn.dataset.targetModal = 'projectFormModal';
-    projectEditBtn.dataset.operation = 'edit';
+    projectEditBtn.dataset.operation = 'update';
     projectEditBtn.innerHTML = `
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -102,6 +104,11 @@ function renderProjects(projects) {
   }
 }
 
+function populateProjectForm(project) {
+  projectIdInput.value = project.id;
+  projectTitleInput.value = project.title;
+}
+
 function switchProject(project) {
   const todosSectionHeading = document.querySelector('.jsTodosSectionHeading');
 
@@ -131,4 +138,9 @@ function attachProjectsEventListeners() {
   projectForm.addEventListener('submit', handleProjectFormSubmit);
 }
 
-export { renderProjects, switchProject, attachProjectsEventListeners };
+export {
+  renderProjects,
+  populateProjectForm,
+  switchProject,
+  attachProjectsEventListeners,
+};

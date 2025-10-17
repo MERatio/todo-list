@@ -31,6 +31,11 @@ PubSub.subscribe('project:create', (msg, data) => {
 });
 
 PubSub.subscribe('project:edit', (msg, data) => {
+  const project = Project.findById(data.projectId);
+  dom.populateProjectForm(project);
+});
+
+PubSub.subscribe('project:update', (msg, data) => {
   const updatedProject = Project.findByIdAndUpdate(data.projectId, {
     title: data.title,
   });
