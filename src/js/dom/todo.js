@@ -78,15 +78,6 @@ function renderTodos(todos) {
 
     const todoEl = document.createElement('li');
     todoEl.classList.add('todo');
-    todoEl.setAttribute('tabindex', '0');
-    todoEl.addEventListener('click', handleTodoClick);
-    todoEl.addEventListener('keydown', (e) => {
-      // Keyboard access (Enter and Space)
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault(); // Prevent scrolling on Space
-        handleTodoClick();
-      }
-    });
 
     const completeBtn = document.createElement('button');
     completeBtn.setAttribute('type', 'button');
@@ -100,17 +91,27 @@ function renderTodos(todos) {
     completeBtn.addEventListener('click', handleCompleteTodoBtnClick);
     todoEl.appendChild(completeBtn);
 
-    const textsEl = document.createElement('div');
-    textsEl.classList.add('todo-texts');
-    todoEl.appendChild(textsEl);
-
     const titleEl = document.createElement('p');
     titleEl.classList.add('todo-title');
     titleEl.textContent = todo.title;
-    textsEl.appendChild(titleEl);
+    todoEl.appendChild(titleEl);
 
     const dueDateEl = getDueDateEl(todo.dueDate);
-    textsEl.appendChild(dueDateEl);
+    dueDateEl.classList.add('todo-due-date');
+    todoEl.appendChild(dueDateEl);
+
+    const todoShowDetailsBtn = document.createElement('button');
+    todoShowDetailsBtn.setAttribute('type', 'button');
+    todoShowDetailsBtn.setAttribute('aria-label', 'Show todo details');
+    todoShowDetailsBtn.classList.add('todo-show-details-btn');
+    todoShowDetailsBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
+        />
+      </svg>`;
+    todoShowDetailsBtn.addEventListener('click', handleTodoClick);
+    todoEl.appendChild(todoShowDetailsBtn);
 
     return todoEl;
   }

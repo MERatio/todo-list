@@ -106,20 +106,20 @@ button svg {
   margin-bottom: 8px;
 }
 
+.todo-list {
+  max-width: 900px;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
 .todo {
   display: flex;
-  align-items: start;
+  align-items: center;
   column-gap: 5px;
-  padding: 10px;
-  cursor: pointer;
 }
 
 .todo:not(:last-child) {
   margin-bottom: 15px;
-}
-
-.todo:hover {
-  background-color: rgba(0, 0, 0, 0.03);
 }
 
 .todo-complete-btn {
@@ -144,6 +144,7 @@ button svg {
   fill: #71b7e6;
 }
 
+.todo-show-details-btn:hover,
 .todo-complete-btn:hover svg.fill-black {
   fill: #4d4d4d;
 }
@@ -153,16 +154,27 @@ button svg {
   height: 24px;
 }
 
-.todo-texts {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  row-gap: 1px;
-}
-
 .todo-title {
   font-size: 1.1rem;
   font-weight: 500;
+}
+
+.todo-due-date {
+  margin-left: auto;
+}
+
+.todo-show-details-btn,
+.project-edit-btn,
+.project-delete-btn,
+.close-dialog-btn {
+  width: 20px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .projects-section {
@@ -246,7 +258,8 @@ button svg {
   max-width: 300px;
   border: 2px solid var(--main-color);
   border-radius: var(--border-radius);
-  margin: 15% auto auto auto;
+  margin: auto;
+  transform: translateY(-30px);
 }
 
 .modal-header {
@@ -258,19 +271,6 @@ button svg {
 .modal-header h3 {
   text-align: center;
   color: #fff;
-}
-
-.close-dialog-btn,
-.project-edit-btn,
-.project-delete-btn {
-  width: 20px;
-  aspect-ratio: 1 / 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
 }
 
 .close-dialog-btn {
