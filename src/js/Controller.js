@@ -61,6 +61,23 @@ PubSub.subscribe('todo:create', (msg, data) => {
   dom.resetForm(form);
 });
 
+PubSub.subscribe('todo:edit', (msg, data) => {
+  const todo = Todo.findById(data.todoId);
+  dom.populateTodoForm(todo);
+});
+
+PubSub.subscribe('todo:update', (msg, data) => {
+  const updatedTodo = Todo.findByIdAndUpdate(data.todoId, {
+    title: data.title,
+    description: data.description,
+    dueDate: data.dueDate,
+    priority: data.priority,
+  });
+  const todos = Todo.findByFilter({ projectId: updatedTodo.projectId });
+  dom.resetForm(data.form);
+  dom.renderTodos(todos);
+});
+
 PubSub.subscribe('todo:delete', (msg, data) => {
   Todo.deleteMany({ id: data.todo.id });
   const todos = Todo.findByFilter({ projectId: data.todo.projectId });

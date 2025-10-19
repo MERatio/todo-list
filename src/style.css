@@ -136,7 +136,8 @@ button svg {
   fill: #ee8277;
 }
 
-.todo-complete-btn:hover svg.fill-orange {
+.todo-complete-btn:hover svg.fill-orange,
+.todo-edit-btn:hover {
   fill: #eea564;
 }
 
@@ -144,8 +145,8 @@ button svg {
   fill: #71b7e6;
 }
 
-.todo-show-details-btn:hover,
-.todo-complete-btn:hover svg.fill-black {
+.todo-complete-btn:hover svg.fill-black,
+.todo-show-details-btn:hover {
   fill: #4d4d4d;
 }
 
@@ -164,6 +165,7 @@ button svg {
 }
 
 .todo-show-details-btn,
+.todo-edit-btn,
 .project-edit-btn,
 .project-delete-btn,
 .close-dialog-btn {
@@ -175,6 +177,10 @@ button svg {
   background-color: transparent;
   border: none;
   cursor: pointer;
+}
+
+.todo-edit-btn {
+  fill: var(--orange);
 }
 
 .projects-section {

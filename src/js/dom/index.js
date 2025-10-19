@@ -8,7 +8,11 @@ import {
   switchProject,
   attachProjectsEventListeners,
 } from './project.js';
-import { renderTodos, attachTodosEventListeners } from './todo.js';
+import {
+  renderTodos,
+  populateTodoForm,
+  attachTodosEventListeners,
+} from './todo.js';
 
 function resetForm(form) {
   form.reset();
@@ -36,5 +40,6 @@ export {
   populateProjectForm,
   switchProject,
   renderTodos,
+  populateTodoForm,
   attachEventListeners,
 };

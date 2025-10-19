@@ -8,9 +8,16 @@ import {
   isThisWeek,
   format,
 } from 'date-fns';
+import { handleShowModalBtnClick } from './shared.js';
 
 const todoFormModalHeading = document.querySelector('.jsTodoFormModalHeading');
 const todoForm = document.querySelector('.jsTodoForm');
+const todoIdInput = document.querySelector('#todo-id');
+const todoProjectIdInput = todoForm.querySelector('#todo-project-id');
+const todoTitleInput = todoForm.querySelector('#todo-title');
+const todoDescriptionInput = todoForm.querySelector('#todo-description');
+const todoDueDateInput = todoForm.querySelector('#todo-due-date');
+const todoPriorityInput = todoForm.querySelector('#todo-priority');
 const todoFormSubmitBtn = todoForm.querySelector('.jsTodoFormSubmitBtn');
 
 function renderTodos(todos) {
@@ -76,6 +83,13 @@ function renderTodos(todos) {
       PubSub.publish('todo:delete', { todo });
     }
 
+    function handleTodoEditBtnClick() {
+      todoFormModalHeading.textContent = 'Edit Todo';
+      todoForm.dataset.submitOperation = 'update';
+      todoFormSubmitBtn.textContent = 'Update Todo';
+      PubSub.publish('todo:edit', { todoId: todo.id });
+    }
+
     const todoEl = document.createElement('li');
     todoEl.classList.add('todo');
 
@@ -113,6 +127,21 @@ function renderTodos(todos) {
     todoShowDetailsBtn.addEventListener('click', handleTodoClick);
     todoEl.appendChild(todoShowDetailsBtn);
 
+    const todoEditBtn = document.createElement('button');
+    todoEditBtn.setAttribute('type', 'button');
+    todoEditBtn.setAttribute('aria-label', 'Edit todo');
+    todoEditBtn.classList.add('todo-edit-btn');
+    todoEditBtn.dataset.targetModal = 'todoFormModal';
+    todoEditBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"
+        />
+      </svg>`;
+    todoEditBtn.addEventListener('click', handleShowModalBtnClick);
+    todoEditBtn.addEventListener('click', handleTodoEditBtnClick);
+    todoEl.appendChild(todoEditBtn);
+
     return todoEl;
   }
 
@@ -122,42 +151,57 @@ function renderTodos(todos) {
   }
 }
 
-function attachTodosEventListeners() {
-  const todoProjectIdInput = document.querySelector('#todo-project-id');
-  const showTodoFormModalBtn = document.querySelector('.jsTodoNewBtn');
+function populateTodoForm(todo) {
+  todoIdInput.value = todo.id;
+  todoProjectIdInput.value = todo.projectId;
+  todoTitleInput.value = todo.title;
+  todoDescriptionInput.value = todo.description;
+  todoDueDateInput.value = todo.dueDate;
+  todoPriorityInput.value = todo.priority;
+}
 
-  function handleShowTodoFormModalBtnClick() {
+function attachTodosEventListeners() {
+  const todoNewBtn = document.querySelector('.jsTodoNewBtn');
+
+  function handleTodoNewBtnClick() {
     const activeProjectEl = document.querySelector('[data-project-id].active');
     const activeProjectId = activeProjectEl.dataset.projectId;
     const today = new Date().toISOString().split('T')[0];
     const todoDueDateInput = document.querySelector('#todo-due-date');
 
+    todoFormModalHeading.textContent = 'Create New Todo';
+    todoForm.dataset.submitOperation = 'create';
+    todoFormSubmitBtn.textContent = 'Create Todo';
+
     todoProjectIdInput.value = activeProjectId;
+
     // Set todo due date input's min and value to today
     todoDueDateInput.setAttribute('min', today);
     todoDueDateInput.value = today;
   }
 
-  function handleTodoNewBtnClick() {
-    todoFormModalHeading.textContent = 'Create New Todo';
-    todoForm.dataset.submitOperation = 'create';
-    todoFormSubmitBtn.textContent = 'Create Todo';
-  }
-
-  function handleTodoFormSubmit(e) {
-    const form = e.currentTarget;
-    const submitOperation = form.dataset.submitOperation;
-    const projectId = todoProjectIdInput.value;
-    const title = form.querySelector('#todo-title').value;
-    const description = form.querySelector('#todo-description').value;
-    const dueDate = form.querySelector('#todo-due-date').value;
-    const priority = form.querySelector('#todo-priority').value;
+  function handleTodoFormSubmit() {
+    const submitOperation = todoForm.dataset.submitOperation;
+    const title = todoTitleInput.value;
+    const description = todoDescriptionInput.value;
+    const dueDate = todoDueDateInput.value;
+    const priority = todoPriorityInput.value;
 
     switch (submitOperation) {
       case 'create':
         PubSub.publish('todo:create', {
-          form,
-          projectId,
+          form: todoForm,
+          projectId: todoProjectIdInput.value,
+          title,
+          description,
+          dueDate,
+          priority,
+        });
+        break;
+      case 'update':
+        PubSub.publish('todo:update', {
+          form: todoForm,
+          todoId: todoIdInput.value,
           title,
           description,
           dueDate,
@@ -167,12 +211,8 @@ function attachTodosEventListeners() {
     }
   }
 
-  showTodoFormModalBtn.addEventListener(
-    'click',
-    handleShowTodoFormModalBtnClick
-  );
-  showTodoFormModalBtn.addEventListener('click', handleTodoNewBtnClick);
+  todoNewBtn.addEventListener('click', handleTodoNewBtnClick);
   todoForm.addEventListener('submit', handleTodoFormSubmit);
 }
 
-export { renderTodos, attachTodosEventListeners };
+export { renderTodos, populateTodoForm, attachTodosEventListeners };
