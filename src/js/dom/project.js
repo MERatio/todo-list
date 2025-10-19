@@ -12,26 +12,6 @@ const projectFormSubmitBtn = projectForm.querySelector(
   '.jsProjectFormSubmitBtn'
 );
 
-function handleProjectFormSubmit(e) {
-  const form = e.currentTarget;
-  const submitOperation = form.dataset.submitOperation;
-  const projectId = projectIdInput.value;
-  const title = projectTitleInput.value;
-
-  switch (submitOperation) {
-    case 'create':
-      PubSub.publish('project:create', { form, title });
-      break;
-    case 'update':
-      PubSub.publish('project:update', {
-        form,
-        projectId,
-        title,
-      });
-      break;
-  }
-}
-
 function renderProjects(projects) {
   function createProject(project) {
     function handleProjectBtnClick(e) {
@@ -149,6 +129,25 @@ function attachProjectsEventListeners() {
     projectFormModalHeading.textContent = 'Create New Project';
     projectForm.dataset.submitOperation = 'create';
     projectFormSubmitBtn.textContent = 'Create Project';
+  }
+
+  function handleProjectFormSubmit() {
+    const submitOperation = projectForm.dataset.submitOperation;
+    const projectId = projectIdInput.value;
+    const title = projectTitleInput.value;
+
+    switch (submitOperation) {
+      case 'create':
+        PubSub.publish('project:create', { form: projectForm, title });
+        break;
+      case 'update':
+        PubSub.publish('project:update', {
+          form: projectForm,
+          projectId,
+          title,
+        });
+        break;
+    }
   }
 
   projectNewBtn.addEventListener('click', handleProjectNewBtnClick);
