@@ -23,7 +23,7 @@ PubSub.subscribe('project:switch', (msg, data) => {
 });
 
 PubSub.subscribe('project:create', (msg, data) => {
-  const project = new Project(data.title);
+  const project = new Project(data.title).save();
   const projects = Project.all();
   dom.resetForm(data.form);
   dom.renderProjects(projects);
@@ -55,7 +55,7 @@ PubSub.subscribe('project:delete', (msg, data) => {
 
 PubSub.subscribe('todo:create', (msg, data) => {
   const { form, projectId, title, description, dueDate, priority } = data;
-  new Todo(projectId, title, description, dueDate, priority);
+  new Todo(projectId, title, description, dueDate, priority).save();
   const todos = Todo.findByFilter({ projectId });
   dom.renderTodos(todos);
   dom.resetForm(form);

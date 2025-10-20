@@ -1,39 +1,58 @@
 import * as helpers from './helpers.js';
 
+const STORAGE_KEY = 'projects';
+
 class Project {
-  constructor(title) {
-    this.id = crypto.randomUUID();
+  constructor(title, id = crypto.randomUUID()) {
     this.title = title;
-    Project.#projects.push(this);
+    this.id = id;
   }
 
-  static #projects = [];
-
   static {
-    new Project('Default');
+    if (!localStorage.getItem(STORAGE_KEY)) {
+      new Project('Default').save();
+    }
   }
 
   static all() {
-    return [...this.#projects];
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    const projects = raw.map(({ title, id }) => new Project(title, id));
+    return projects;
   }
 
   static findById(projectId) {
-    return this.#projects.find((project) => project.id === projectId);
+    const projects = this.all();
+    const project = projects.find((project) => project.id === projectId);
+    return project;
   }
 
   static findByIdAndUpdate(projectId, updatedProps) {
-    this.#projects = helpers.updateObjectInArray(
-      this.#projects,
+    const projects = this.all();
+    const updatedProjects = helpers.updateObjectInArray(
+      projects,
       projectId,
       updatedProps
     );
+    const updatedProject = updatedProjects.find(
+      (project) => project.id === projectId
+    );
 
-    const updatedProject = this.findById(projectId);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProjects));
+
     return updatedProject;
   }
 
   static deleteMany(filter) {
-    this.#projects = helpers.filterOutBy(this.#projects, filter);
+    const projects = this.all();
+    const updatedProjects = helpers.filterOutBy(projects, filter);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProjects));
+  }
+
+  save() {
+    const projects = Project.all();
+    projects.push(this);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+    return this;
   }
 }
 
